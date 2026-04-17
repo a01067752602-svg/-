@@ -800,13 +800,23 @@
   }, { passive: false });
 
   // ── Lottie 마스코트 ──
-  lottie.loadAnimation({
-    container: document.getElementById('lottie-mascot'),
-    renderer: 'svg',
-    loop: true,
-    autoplay: true,
-    path: 'Astronaut_and_spaceship_in_space_scene.json'
-  });
+  (function(){
+    var wrap = document.getElementById('lottie-mascot');
+    var loaded = false;
+    var anim = lottie.loadAnimation({
+      container: wrap,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'Astronaut_and_spaceship_in_space_scene.json'
+    });
+    anim.addEventListener('data_ready', function(){ loaded = true; });
+    anim.addEventListener('data_failed', function(){ showFallback(); });
+    setTimeout(function(){ if(!loaded) showFallback(); }, 3000);
+    function showFallback(){
+      wrap.innerHTML = '<div style="font-size:90px;text-align:center;line-height:220px;animation:float 3s ease-in-out infinite;">🚀</div>';
+    }
+  })();
 
   // ── 관리자 ──
   var ADMIN_PW_KEY='tuntun_admin_pw';
