@@ -84,42 +84,57 @@ function addPoints(n) {
 
 /* ── 레벨업 축하 모달 ── */
 var LEVELUP_DATA = [
-  null, // 0단계 없음
-  { badge:'2단계', icon:'🧭', title:'튼튼탐험가', msg:'멋진 탐험가가 됐어요!', theme:'theme-2', emoji:['🎉','⭐','🌟','🎊','✨','💚'] },
-  { badge:'3단계', icon:'🏅', title:'건강챔피언', msg:'건강 챔피언 등극!',    theme:'theme-3', emoji:['🏅','🔥','💪','🎯','⭐','🎉'] },
-  { badge:'4단계', icon:'🦸', title:'슈퍼히어로', msg:'최고 레벨 달성! 대박!', theme:'theme-4', emoji:['🦸','👑','🌈','💫','🎆','🎇'] }
+  null,
+  { badge:'2단계 달성! 🎉', icon:'🧭', title:'튼튼탐험가', msg:'멋진 탐험가가 됐어요!\n계속 건강을 쌓아가요!', stars:'⭐ ⭐ ⭐', btnText:'계속 도전! →', theme:'theme-2', emoji:['🎉','⭐','🌟','🎊','✨','💚','🍀','🌿'] },
+  { badge:'3단계 달성! 🏅', icon:'🏅', title:'건강챔피언', msg:'건강 챔피언 등극!\n정말 대단해요!', stars:'🏅 🔥 🏅 🔥 🏅', btnText:'챔피언처럼 고고! →', theme:'theme-3', emoji:['🏅','🔥','💪','🎯','⭐','🎉','👊','✨'] }
 ];
 
 function showLevelup(lvIdx) {
+  if (lvIdx === 3) { showHeroModal(); return; }
   var d = LEVELUP_DATA[lvIdx];
   if (!d) { showToast('🎉 레벨업!'); return; }
 
-  var box = document.querySelector('.lum-box');
+  var box = document.getElementById('lum-box');
   box.className = 'lum-box ' + d.theme;
   document.getElementById('lum-icon').textContent  = d.icon;
   document.getElementById('lum-badge').textContent = d.badge;
   document.getElementById('lum-title').textContent = d.title;
   document.getElementById('lum-msg').textContent   = d.msg;
+  document.getElementById('lum-stars').textContent = d.stars;
+  document.getElementById('lum-btn').textContent   = d.btnText;
 
-  /* 색종이 뿌리기 */
   var cc = document.getElementById('lum-confetti');
   cc.innerHTML = '';
-  for (var i = 0; i < 18; i++) {
+  for (var i = 0; i < 20; i++) {
     var s = document.createElement('span');
     s.textContent = d.emoji[i % d.emoji.length];
-    s.style.left  = Math.random() * 90 + '%';
-    s.style.top   = '-20px';
-    
-    s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    s.style.cssText = 'position:absolute;left:' + Math.random()*90 + '%;top:-20px;font-size:' + (14+Math.random()*14) + 'px;animation:confettiFall ' + (1.2+Math.random()*1.2) + 's ' + (Math.random()*1.2) + 's ease-in forwards;';
     cc.appendChild(s);
   }
-
   document.getElementById('levelup-modal').classList.add('open');
 }
 
 function closeLevelup() {
   document.getElementById('levelup-modal').classList.remove('open');
-  showToast('🎉 ' + LEVELS[getLvIdx(points)].name + ' 달성!');
+}
+
+/* ── 슈퍼히어로 특별 모달 ── */
+function showHeroModal() {
+  var cc = document.getElementById('hero-confetti');
+  cc.innerHTML = '';
+  var heroEmoji = ['🦸','👑','🌈','💫','🎆','🎇','⭐','🌟','✨','🎉','🎊','🏆'];
+  for (var i = 0; i < 30; i++) {
+    var s = document.createElement('span');
+    s.textContent = heroEmoji[i % heroEmoji.length];
+    s.style.cssText = 'position:absolute;left:' + Math.random()*90 + '%;top:-20px;font-size:' + (16+Math.random()*18) + 'px;animation:confettiFall ' + (1.5+Math.random()*1.5) + 's ' + (Math.random()*1.5) + 's ease-in forwards;';
+    cc.appendChild(s);
+  }
+  document.getElementById('hero-modal').classList.add('open');
+}
+
+function closeHeroModal() {
+  document.getElementById('hero-modal').classList.remove('open');
+  showToast('🦸 슈퍼히어로 달성! 선생님께 선물을 받으세요! 🎁');
 }
 
 /* ── 패널 열기 / 닫기 ── */
@@ -130,6 +145,7 @@ function openPanel(id) {
   document.getElementById('main-menu').style.display = 'none';
   if (id === 'panel-body-score') initBodyScore();
   if (id === 'panel-picture')    initPicture();
+  if (id === 'panel-mission')    initMissionPanel();
   window.scrollTo(0, 0);
   /* 패널 내 모든 a 태그 클릭 이벤트 보장 */
   panel.querySelectorAll('a[href]').forEach(function(a) {
@@ -143,16 +159,95 @@ function closePanel(id) {
   document.getElementById('main-menu').style.display = 'block';
 }
 
-/* ── 미션 완료 ── */
+/* ── 미션 관련 상수 ── */
+var MISSION_STORAGE_KEY = 'tuntun_mission_daily';
+var MISSION_MAX_PT = 30; // 하루 최대 포인트 (5+5+8+5+7)
+var MISSION_CONFIG = { m1:5, m2:5, m3:8, m4:5, m5:7 };
+
+/* 오늘 날짜 문자열 */
+function getTodayStr() {
+  var d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+}
+
+/* 오늘 미션 데이터 로드 */
+function loadMissionToday() {
+  try {
+    var raw = localStorage.getItem(MISSION_STORAGE_KEY);
+    if (!raw) return { date: getTodayStr(), done: {}, pts: 0 };
+    var data = JSON.parse(raw);
+    if (data.date !== getTodayStr()) {
+      // 날짜가 바뀌면 초기화
+      return { date: getTodayStr(), done: {}, pts: 0 };
+    }
+    return data;
+  } catch(e) { return { date: getTodayStr(), done: {}, pts: 0 }; }
+}
+
+/* 오늘 미션 데이터 저장 */
+function saveMissionToday(data) {
+  try { localStorage.setItem(MISSION_STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+/* 미션 패널 열릴 때 오늘 상태 복원 */
+function initMissionPanel() {
+  var data = loadMissionToday();
+  var ids = ['m1','m2','m3','m4','m5'];
+  ids.forEach(function(id) {
+    var el  = document.getElementById(id);
+    var btn = document.getElementById('btn-' + id);
+    if (!el || !btn) return;
+    if (data.done[id]) {
+      el.classList.add('done');
+      btn.textContent = '완료 ✓';
+      btn.classList.add('done');
+    } else {
+      el.classList.remove('done');
+      btn.textContent = '완료!';
+      btn.classList.remove('done');
+    }
+  });
+  renderMissionInfo(data);
+}
+
+/* 미션 현황 표시 */
+function renderMissionInfo(data) {
+  var el = document.getElementById('mission-daily-info');
+  if (!el) return;
+  var earned = data.pts || 0;
+  var remain = MISSION_MAX_PT - earned;
+  if (earned >= MISSION_MAX_PT) {
+    el.innerHTML = '<span class="mdi-done">🎉 오늘 미션 포인트를 모두 획득했어요! (+' + earned + 'P)<br>내일 또 도전해요!</span>';
+  } else {
+    el.innerHTML = '오늘 획득 <strong>' + earned + 'P</strong> / 최대 <strong>' + MISSION_MAX_PT + 'P</strong> &nbsp;|&nbsp; 남은 포인트 <span class="mdi-done">+' + remain + 'P</span>';
+  }
+}
+
+/* ── 미션 완료 (일일 제한 포함) ── */
 function doMission(id, n) {
-  if (missionDone[id]) return;
+  var data = loadMissionToday();
+  // 이미 완료한 미션
+  if (data.done[id]) {
+    showToast('✅ 이미 완료한 미션이에요!');
+    return;
+  }
+  // 일일 포인트 한도 초과 체크
+  if (data.pts + n > MISSION_MAX_PT) {
+    showToast('⚠️ 오늘 미션 포인트(' + MISSION_MAX_PT + 'P)를 모두 채웠어요!');
+    return;
+  }
+  // 완료 처리
+  data.done[id] = true;
+  data.pts = (data.pts || 0) + n;
+  saveMissionToday(data);
   missionDone[id] = true;
   var el  = document.getElementById(id);
+  var btn = document.getElementById('btn-' + id);
   el.classList.add('done');
-  var btn = el.querySelector('.m-btn');
   btn.textContent = '완료 ✓';
   btn.classList.add('done');
   addPoints(n);
+  renderMissionInfo(data);
 }
 
 /* ─────────────────────────────

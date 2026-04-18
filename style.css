@@ -4,22 +4,32 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
- 50%{transform:translateY(-8px)} }
- 50%{transform:scale(1.18)} }
- 50%{opacity:0.6;transform:scale(1.15)} }
- 50%{transform:translateY(-5px)} }
- 100%{transform:rotate(360deg)} }
- 100%{opacity:1;transform:translateY(0)} }
- 50%{box-shadow:0 0 0 6px rgba(29,158,117,0.15)} }
- 30%{transform:scale(1.22)} 60%{transform:scale(0.95)} 100%{transform:scale(1)} }
- 50%{opacity:0.7} }
- 33%{transform:rotate(-10deg)} 66%{transform:rotate(10deg)} }
- 100%{opacity:1;transform:translateY(0)} }
- 20%{transform:rotate(15deg)} 40%{transform:rotate(-15deg)} 60%{transform:rotate(10deg)} 80%{transform:rotate(-10deg)} }
- 95%{opacity:0.7} }
+/* ── 귀여운 웹폰트 ── */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Gaegu:wght@400;700&display=swap');
+
+/* ── 애니메이션 ── */
+@keyframes bounce    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes pulse     { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
+@keyframes sparkle   { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.15)} }
+@keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+@keyframes spin      { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+@keyframes slideIn   { 0%{opacity:0;transform:translateY(16px)} 100%{opacity:1;transform:translateY(0)} }
+@keyframes glow      { 0%,100%{box-shadow:0 0 0 0 rgba(29,158,117,0)} 50%{box-shadow:0 0 0 6px rgba(29,158,117,0.15)} }
+@keyframes pop       { 0%{transform:scale(1)} 30%{transform:scale(1.22)} 60%{transform:scale(0.95)} 100%{transform:scale(1)} }
+@keyframes barPulse  { 0%,100%{opacity:1} 50%{opacity:0.7} }
+@keyframes wiggle    { 0%,100%{transform:rotate(0deg)} 33%{transform:rotate(-10deg)} 66%{transform:rotate(10deg)} }
+@keyframes fadeInUp  { 0%{opacity:0;transform:translateY(20px)} 100%{opacity:1;transform:translateY(0)} }
+@keyframes bellRing  { 0%,100%{transform:rotate(0deg)} 20%{transform:rotate(15deg)} 40%{transform:rotate(-15deg)} 60%{transform:rotate(10deg)} 80%{transform:rotate(-10deg)} }
+@keyframes tvBlink   { 0%,90%,100%{opacity:1} 95%{opacity:0.7} }
 
 /* ── 기본 레이아웃 ── */
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; }
+body {
+  font-family: 'Gaegu', 'Nanum Pen Script', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  background: #f5f5f5;
+  -webkit-font-smoothing: antialiased;
+}
 
 .app {
   max-width: 430px;
@@ -29,14 +39,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   min-height: 100vh;
   position: relative;
   z-index: 0;
+  font-family: 'Gaegu', 'Nanum Pen Script', sans-serif;
 }
 
 /* ── 헤더 ── */
 .header { text-align: center; padding: 20px 0 14px; }
-.header-logo { font-size: 36px; display: inline-block; margin-bottom: 6px; }
-.header-logo-img { width: 80px; height: 80px; object-fit: contain; border-radius: 18px; }
+.header-logo { font-size: 36px; display: inline-block; margin-bottom: 6px; animation: none; }
 .header-title { font-size: 22px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.3px; }
-.header-title span { color: #1D9E75; display: inline-block;  }
+.header-title span { color: #1D9E75; display: inline-block; animation: none; }
 .header-sub { font-size: 12px; color: #888; margin-top: 4px; }
 
 /* ── 레벨 바 ── */
@@ -46,10 +56,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   border: 0.5px solid #e0e0e0;
   padding: 14px 16px;
   margin-bottom: 12px;
-  
+  animation: none;
 }
 .level-row { display: flex; align-items: center; gap: 10px; }
-.level-icon { font-size: 32px; display: inline-block;  }
+.level-icon { font-size: 32px; display: inline-block; animation: none; }
 .level-info { flex: 1; }
 .level-name { font-size: 15px; font-weight: 600; color: #1a1a1a; }
 .level-sub { font-size: 12px; color: #888; margin-top: 2px; }
@@ -59,7 +69,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   padding: 8px 14px;
   text-align: center;
   border: 0.5px solid #EF9F27;
-  
+  animation: none;
 }
 .coin-num { font-size: 20px; font-weight: 600; color: #BA7517; }
 .coin-lbl { font-size: 10px; color: #854F0B; margin-top: 1px; }
@@ -70,7 +80,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   border-radius: 999px;
   background: #5DCAA5;
   transition: width 0.7s cubic-bezier(.4,0,.2,1);
-  
+  animation: none;
 }
 .prog-labels { display: flex; justify-content: space-between; font-size: 11px; color: #999; margin-top: 4px; }
 
@@ -86,10 +96,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 }
 .lv-card.active { opacity: 1; border: 2px solid #5DCAA5; background: #E1F5EE; }
 .lv-card .li { font-size: 22px; display: inline-block; }
-.lv-card:nth-child(1) .li {  }
-.lv-card:nth-child(2) .li {  }
-.lv-card:nth-child(3) .li {  }
-.lv-card:nth-child(4) .li {  }
+.lv-card:nth-child(1) .li { animation: none; }
+.lv-card:nth-child(2) .li { animation: none; }
+.lv-card:nth-child(3) .li { animation: none; }
+.lv-card:nth-child(4) .li { animation: none; }
 .lv-card .ln { font-size: 10px; color: #888; margin-top: 3px; line-height: 1.3; }
 .lv-card.active .ln { color: #085041; font-weight: 600; }
 .lv-card .lc { font-size: 10px; color: #BA7517; margin-top: 2px; }
@@ -120,23 +130,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .menu-card:hover { transform: scale(1.02); border-color: #ccc; }
 .menu-card:active { transform: scale(0.97); }
 .mc-icon { font-size: 26px; margin-bottom: 8px; display: inline-block; }
-.menu-card:nth-child(1) .mc-icon {  }
-.menu-card:nth-child(2) .mc-icon {  }
-.menu-card:nth-child(3) .mc-icon {  }
-.menu-card:nth-child(4) .mc-icon {  }
-.menu-card:nth-child(5) .mc-icon {  }
-.menu-card:nth-child(6) .mc-icon {  }
+.menu-card:nth-child(1) .mc-icon { animation: none; }
+.menu-card:nth-child(2) .mc-icon { animation: none; }
+.menu-card:nth-child(3) .mc-icon { animation: none; }
+.menu-card:nth-child(4) .mc-icon { animation: none; }
+.menu-card:nth-child(5) .mc-icon { animation: none; }
+.menu-card:nth-child(6) .mc-icon { animation: none; }
 .mc-title { font-size: 13px; font-weight: 600; color: #1a1a1a; }
 .mc-desc { font-size: 11px; color: #888; margin-top: 3px; line-height: 1.4; }
 
 /* 메뉴 뱃지 */
-.mc-pt        { display: inline-block; margin-top: 7px; background: #FAEEDA; color: #854F0B; font-size: 10px; border-radius: 999px; padding: 2px 8px;  }
+.mc-pt        { display: inline-block; margin-top: 7px; background: #FAEEDA; color: #854F0B; font-size: 10px; border-radius: 999px; padding: 2px 8px; animation: none; }
 .mc-link      { display: inline-block; margin-top: 7px; background: #E1F5EE; color: #0F6E56; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #5DCAA5; }
-.mc-link-teal { display: inline-block; margin-top: 7px; background: #E1F5EE; color: #0F6E56; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #5DCAA5;  }
+.mc-link-teal { display: inline-block; margin-top: 7px; background: #E1F5EE; color: #0F6E56; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #5DCAA5; animation: none; }
 .mc-link-amber { display: inline-block; margin-top: 7px; background: #FAEEDA; color: #854F0B; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #EF9F27; }
 .mc-link-purple { display: inline-block; margin-top: 7px; background: #EEEDFE; color: #534AB7; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #AFA9EC; }
-.mc-link-gold { display: inline-block; margin-top: 7px; background: #FAEEDA; color: #633806; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #EF9F27;  }
-.mc-link-body { display: inline-block; margin-top: 7px; background: #FBEAF0; color: #72243E; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #ED93B1;  }
+.mc-link-gold { display: inline-block; margin-top: 7px; background: #FAEEDA; color: #633806; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #EF9F27; animation: none; }
+.mc-link-body { display: inline-block; margin-top: 7px; background: #FBEAF0; color: #72243E; font-size: 10px; border-radius: 999px; padding: 2px 8px; border: 0.5px solid #ED93B1; animation: none; }
 
 /* ── 패널 공통 ── */
 .panel {
@@ -149,10 +159,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   position: relative;
   z-index: 1;
 }
-.panel.open { display: block;  }
- 100%{opacity:1} }
+.panel.open { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { 0%{opacity:0} 100%{opacity:1} }
 .ph { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-.ph-icon { font-size: 20px; display: inline-block;  }
+.ph-icon { font-size: 20px; display: inline-block; animation: none; }
 .ph h2 { font-size: 15px; font-weight: 600; color: #1a1a1a; flex: 1; line-height: 1.3; }
 .close-btn {
   padding: 6px 16px;
@@ -164,11 +174,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   background: #E24B4A;
   color: white;
   white-space: nowrap;
-  
+  animation: none;
   letter-spacing: 0.3px;
 }
 .close-btn:hover { background: #A32D2D; transform: scale(1.08); }
-
+@keyframes closePulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(226,75,74,0); }
   50%      { transform: scale(1.07); box-shadow: 0 0 0 5px rgba(226,75,74,0.25); }
 }
 .panel-desc { font-size: 12px; color: #888; margin-bottom: 12px; }
@@ -187,7 +198,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   font-weight: 600;
   cursor: pointer;
   margin-top: 10px;
-  
+  animation: none;
 }
 .submit-btn:hover { background: #0F6E56; }
 
@@ -202,7 +213,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   text-align: center;
   margin-bottom: 10px;
   transition: transform 0.15s;
-  
+  animation: none;
 }
 .ext-btn:hover { transform: scale(1.02); }
 .ext-btn-green  { background: #1D9E75; color: #E1F5EE; }
@@ -274,12 +285,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   font-size: 12px;
   color: #1D9E75;
   cursor: pointer;
-  transition: transform 0.1s, background 0.15s;
+  transition: transform 0.1s;
 }
 .m-btn:hover { transform: scale(1.08); }
 .m-btn.done { background: #5DCAA5; color: #085041; border-color: #5DCAA5; }
-.m-btn.done:hover { background: #E24B4A; color: #fff; border-color: #E24B4A; }
-.m-btn.done:hover::after { content: ' 취소'; }
 
 /* ── 패들렛 인증 카드 (미션 하단) ── */
 .padlet-bottom-card {
@@ -291,9 +300,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   display: flex;
   align-items: center;
   gap: 12px;
-  
+  animation: none;
 }
-.pbc-icon { font-size: 26px; flex-shrink: 0;  }
+.pbc-icon { font-size: 26px; flex-shrink: 0; animation: none; }
 .pbc-body { flex: 1; }
 .pbc-title { font-size: 13px; font-weight: 600; color: #27500A; }
 .pbc-sub { font-size: 11px; color: #3B6D11; margin-top: 2px; }
@@ -319,7 +328,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   margin-bottom: 14px;
   text-align: center;
 }
-.gb-icon { font-size: 36px; display: inline-block;  margin-bottom: 6px; }
+.gb-icon { font-size: 36px; display: inline-block; animation: none; margin-bottom: 6px; }
 .gb-title { font-size: 16px; font-weight: 600; color: #412402; margin-bottom: 4px; }
 .gb-sub { font-size: 12px; color: #854F0B; line-height: 1.5; }
 
@@ -363,7 +372,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   border: 0.5px solid #EF9F27; background: #FAEEDA; color: #633806;
   margin-top: 14px; display: flex; align-items: center; gap: 8px;
 }
-.cert-icon { font-size: 18px; flex-shrink: 0;  }
+.cert-icon { font-size: 18px; flex-shrink: 0; animation: none; }
 .cert-pt { font-weight: 600; color: #BA7517; }
 
 .padlet-proof-card {
@@ -371,7 +380,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   border-radius: 14px; padding: 14px 16px; margin-top: 12px;
   display: flex; align-items: center; gap: 12px;
 }
-.ppc-icon { font-size: 22px; flex-shrink: 0;  }
+.ppc-icon { font-size: 22px; flex-shrink: 0; animation: none; }
 .ppc-body { flex: 1; }
 .ppc-title { font-size: 13px; font-weight: 600; color: #26215C; }
 .ppc-sub { font-size: 11px; color: #534AB7; margin-top: 2px; }
@@ -423,7 +432,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 }
 .calc-btn:hover { background: #993556; }
 .result-card { border-radius: 8px; padding: 14px; text-align: center; display: none; }
-.result-card.show { display: block;  }
+.result-card.show { display: block; animation: none; }
 .result-bmi   { font-size: 28px; font-weight: 600; margin-bottom: 4px; }
 .result-label { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
 .result-desc  { font-size: 12px; line-height: 1.5; color: #666; }
@@ -481,14 +490,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .channel-banner {
   background: #E1F5EE; border: 1.5px solid #5DCAA5;
   border-radius: 14px; padding: 18px 16px; text-align: center;
-  margin-bottom: 14px; 
+  margin-bottom: 14px; animation: none;
 }
 .ch-on-air {
   display: inline-block; background: #E24B4A; color: white;
   font-size: 10px; font-weight: 600; border-radius: 999px; padding: 2px 8px;
-  margin-bottom: 8px; 
+  margin-bottom: 8px; animation: none;
 }
-.ch-tv   { font-size: 44px; display: inline-block;  margin-bottom: 8px; }
+.ch-tv   { font-size: 44px; display: inline-block; animation: none; margin-bottom: 8px; }
 .ch-name { font-size: 18px; font-weight: 600; color: #085041; margin-bottom: 4px; }
 .ch-sub  { font-size: 12px; color: #0F6E56; line-height: 1.5; }
 
@@ -500,9 +509,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   padding: 18px 16px;
   text-align: center;
   margin-bottom: 14px;
-  
+  animation: none;
 }
-.sf-icon  { font-size: 44px; display: inline-block;  margin-bottom: 8px; }
+.sf-icon  { font-size: 44px; display: inline-block; animation: none; margin-bottom: 8px; }
 .sf-title { font-size: 18px; font-weight: 600; color: #26215C; margin-bottom: 4px; }
 .sf-sub   { font-size: 12px; color: #534AB7; line-height: 1.6; }
 
@@ -527,7 +536,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   background: #FAEEDA; color: #633806;
   font-size: 10px; border-radius: 999px; padding: 2px 8px;
   border: 0.5px solid #EF9F27;
-  
+  animation: none;
 }
 .hall-card {
   border: 1.5px solid #EF9F27 !important;
@@ -540,14 +549,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   position: absolute;
   top: 6px; right: 8px;
   font-size: 14px;
-  
+  animation: none;
 }
-.hall-card .mc-icon {  }
+.hall-card .mc-icon { animation: none; }
 .hall-card .mc-title { color: #854F0B; }
 
 /* ── 명예의 전당 배너 ── */
- 50%{opacity:0.75} }
- 50%{transform:rotate(8deg) scale(1.12)} }
+@keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.75} }
+@keyframes trophySpin { 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(8deg) scale(1.12)} }
 
 .hall-banner {
   border-radius: 16px;
@@ -563,12 +572,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   font-size: 16px;
   letter-spacing: 4px;
   margin-bottom: 10px;
-  
+  animation: none;
 }
 .hall-trophy {
   font-size: 52px;
   display: inline-block;
-  
+  animation: none;
   margin-bottom: 10px;
   filter: drop-shadow(0 2px 6px rgba(186,117,23,0.3));
 }
@@ -588,14 +597,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .hall-crowns {
   font-size: 20px;
   letter-spacing: 6px;
-  
+  animation: none;
 }
 
 .ext-btn-hall {
   background: #BA7517;
   color: #FFF8E1;
   font-size: 15px;
-  
+  animation: none;
 }
 .ext-btn-hall:hover { background: #854F0B; }
 .ext-notice-hall {
@@ -605,9 +614,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 }
 
 /* ── 이달의 퍼즐 완성 ── */
- 50%{box-shadow:0 0 12px 4px rgba(239,159,39,0.35)} }
- 80%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
- 100%{transform:rotate(360deg)} }
+@keyframes frameGlow { 0%,100%{box-shadow:0 0 0 0 rgba(239,159,39,0)} 50%{box-shadow:0 0 12px 4px rgba(239,159,39,0.35)} }
+@keyframes completePopIn { 0%{transform:scale(0.7);opacity:0} 80%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+@keyframes starSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 
 .picture-card {
   border: 1.5px solid #ED93B1 !important;
@@ -620,7 +629,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   position: absolute;
   top: 6px; right: 8px;
   font-size: 14px;
-  
+  animation: none;
 }
 .picture-card .mc-title { color: #72243E; }
 .mc-link-picture {
@@ -628,7 +637,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   background: #FBEAF0; color: #72243E;
   font-size: 10px; border-radius: 999px; padding: 2px 8px;
   border: 0.5px solid #ED93B1;
-  
+  animation: none;
 }
 
 /* 진행 바 */
@@ -660,14 +669,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   background: #FAEEDA;
   border: 4px solid #BA7517;
   border-radius: 12px;
-  
+  animation: none;
   box-shadow: 0 0 0 2px #EF9F27, inset 0 0 0 2px rgba(186,117,23,0.2);
 }
 .frame-corner {
   position: absolute;
   font-size: 14px;
   color: #EF9F27;
-  
+  animation: none;
   line-height: 1;
 }
 .frame-corner.tl { top: -2px;  left: -2px;  }
@@ -729,7 +738,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   padding: 16px;
   text-align: center;
   margin-bottom: 12px;
-  
+  animation: completePopIn 0.6s ease;
 }
 .pc-icon  { font-size: 36px; margin-bottom: 6px; }
 .pc-title { font-size: 18px; font-weight: 700; color: #27500A; margin-bottom: 4px; }
@@ -815,7 +824,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   cursor: pointer;
   letter-spacing: 0.3px;
   transition: background 0.15s, transform 0.12s;
-  
+  animation: none;
 }
 .admin-btn:hover { background: #444441; transform: scale(1.05); }
 
@@ -837,7 +846,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   padding: 28px 24px 22px;
   width: 280px;
   text-align: center;
-  
+  animation: fadeIn 0.3s ease;
   position: relative;
   z-index: 100000;
   pointer-events: auto;
@@ -849,7 +858,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   width: 100%; padding: 10px 12px;
   border: 1.5px solid #e0e0e0; border-radius: 10px;
   font-size: 16px; text-align: center; color: #1a1a1a;
-  margin-bottom: 6px;
+  margin-bottom: 6px; letter-spacing: 4px;
 }
 .modal-input:focus { outline: none; border-color: #1D9E75; }
 .modal-err { font-size: 12px; color: #E24B4A; min-height: 18px; margin-bottom: 10px; }
@@ -865,22 +874,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   background: #1D9E75; color: white; font-size: 14px; font-weight: 600; cursor: pointer;
 }
 .modal-confirm:hover { background: #0F6E56; }
-
-/* ── 로그인 배지 ── */
-.login-badge {
-  display: flex; align-items: center; gap: 8px; flex: 1;
-}
-#login-badge-text {
-  font-size: 12px; font-weight: 600; color: #1D9E75;
-  background: #E1F5EE; border-radius: 20px;
-  padding: 4px 12px; border: 1px solid #5DCAA5;
-}
-.logout-btn {
-  font-size: 11px; color: #888;
-  background: none; border: 1px solid #ddd;
-  border-radius: 20px; padding: 3px 10px; cursor: pointer;
-}
-.logout-btn:hover { background: #f5f5f5; color: #E24B4A; border-color: #E24B4A; }
 
 /* ── 대시보드 ── */
 .dash-stats {
@@ -1017,10 +1010,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   text-align: center;
   cursor: pointer;
   transition: transform 0.15s !important;
-  
+  animation: none;
 }
 .menu-card-hero:hover { transform: scale(1.02) !important; }
-.hero-icon  { font-size: 52px; display: inline-block;  margin-bottom: 10px; }
+.hero-icon  { font-size: 52px; display: inline-block; animation: none; margin-bottom: 10px; }
 .hero-title { font-size: 22px; font-weight: 700; color: #633806; margin-bottom: 6px; }
 .hero-desc  { font-size: 14px; color: #854F0B; line-height: 1.6; margin-bottom: 10px; }
 .hero-badge {
@@ -1028,23 +1021,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   font-size: 12px; font-weight: 600; border-radius: 999px;
   padding: 4px 14px; margin-bottom: 12px;
   border: 1px solid #EF9F27;
-  
+  animation: none;
 }
 .hero-cta {
   display: block; background: #BA7517; color: #FFF8E1;
   font-size: 15px; font-weight: 700; border-radius: 12px;
-  padding: 12px; 
+  padding: 12px; animation: none;
 }
-
-/* 히어로 카드 소형 (절반 크기) */
-.menu-card-hero-sm {
-  padding: 12px 14px !important;
-}
-.menu-card-hero-sm .hero-icon { font-size: 28px; margin-bottom: 5px; }
-.menu-card-hero-sm .hero-title { font-size: 15px; margin-bottom: 3px; }
-.menu-card-hero-sm .hero-desc { font-size: 11px; margin-bottom: 6px; }
-.menu-card-hero-sm .hero-badge { font-size: 10px; padding: 2px 10px; margin-bottom: 7px; }
-.menu-card-hero-sm .hero-cta { font-size: 12px; padding: 8px; border-radius: 8px; }
 
 /* 행 2: 3열 */
 .menu-row-3col {
@@ -1056,7 +1039,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   text-align: center;
   border-radius: 14px !important;
 }
-.mc-icon-md   { font-size: 28px; display: inline-block; margin-bottom: 6px;  }
+.mc-icon-md   { font-size: 28px; display: inline-block; margin-bottom: 6px; animation: none; }
 .mc-title-md  { font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; line-height: 1.4; }
 .mc-badge-md  { font-size: 10px !important; margin-top: 0 !important; }
 .mc-desc-sm   { font-size: 11px; color: #888; margin-bottom: 6px; }
@@ -1084,7 +1067,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .mc-wide-body { flex: 1; }
 
 /* ── 동기부여 문구 배너 ── */
-
+@keyframes motivePulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(29,158,117,0); }
   50%      { transform: scale(1.01); box-shadow: 0 0 0 5px rgba(29,158,117,0.12); }
 }
 .motivation-banner {
@@ -1093,13 +1077,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 14px;
-  
+  animation: none;
 }
 .mb-text {
   font-size: 13px;
   color: #085041;
-  line-height: 2;
-  text-align: left;
+  line-height: 1.8;
+  text-align: center;
 }
 .mb-levels {
   display: inline-block;
@@ -1163,49 +1147,322 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   pointer-events: none;
 }
 
-/* ── 학생 정보 입력행 ── */
-.student-info-row {
-  display: flex; gap: 8px; margin-bottom: 10px;
-}
-.student-info-row .input-group { flex: 1; }
-.student-info-row .num-input { width: 100%; }
-.input-row { display: flex; gap: 8px; }
-.input-group { flex: 1; }
-.bmi-input { text-align: center; cursor: default; }
+/* ── 전체 글씨 크기 업 + 진하게 ── */
+.mc-title       { font-size: 15px !important; font-weight: 800 !important; }
+.mc-title-sm    { font-size: 14px !important; font-weight: 800 !important; }
+.mc-title-md    { font-size: 15px !important; font-weight: 800 !important; }
+.mc-desc        { font-size: 13px !important; font-weight: 700 !important; }
+.mc-desc-sm     { font-size: 13px !important; font-weight: 700 !important; }
+.level-name     { font-size: 17px !important; font-weight: 800 !important; }
+.level-sub      { font-size: 14px !important; font-weight: 700 !important; }
+.coin-num       { font-size: 24px !important; font-weight: 800 !important; }
+.coin-lbl       { font-size: 13px !important; font-weight: 700 !important; }
+.prog-labels    { font-size: 13px !important; font-weight: 700 !important; }
+.header-title   { font-size: 26px !important; font-weight: 800 !important; }
+.header-sub     { font-size: 15px !important; font-weight: 700 !important; }
+.hero-title     { font-size: 26px !important; font-weight: 800 !important; }
+.hero-desc      { font-size: 16px !important; font-weight: 700 !important; }
+.hero-cta       { font-size: 17px !important; font-weight: 800 !important; }
+.hero-badge     { font-size: 14px !important; font-weight: 800 !important; }
+.menu-section-label { font-size: 17px !important; font-weight: 800 !important; }
+.mb-text        { font-size: 15px !important; font-weight: 700 !important; }
+.mb-levels      { font-size: 13px !important; font-weight: 800 !important; }
+.mb-question    { font-size: 15px !important; font-weight: 800 !important; }
+.ph h2          { font-size: 18px !important; font-weight: 800 !important; }
+.mi-text        { font-size: 15px !important; font-weight: 700 !important; }
+.mi-sub         { font-size: 13px !important; font-weight: 700 !important; }
+.mi-pt          { font-size: 14px !important; font-weight: 800 !important; }
+.m-btn          { font-size: 14px !important; font-weight: 800 !important; }
+.pbc-title      { font-size: 15px !important; font-weight: 800 !important; }
+.pbc-sub        { font-size: 13px !important; font-weight: 700 !important; }
+.pbc-btn        { font-size: 14px !important; font-weight: 800 !important; }
+.ebb-main       { font-size: 16px !important; font-weight: 800 !important; }
+.ebb-sub        { font-size: 13px !important; font-weight: 700 !important; }
+.mini-banner-title { font-size: 16px !important; font-weight: 800 !important; }
+.mini-banner-sub   { font-size: 14px !important; font-weight: 700 !important; }
+.ext-notice     { font-size: 14px !important; font-weight: 700 !important; }
+.lv-card .ln    { font-size: 12px !important; font-weight: 800 !important; }
+.lv-card .lc    { font-size: 12px !important; font-weight: 700 !important; }
+.mc-link, .mc-link-teal, .mc-link-amber,
+.mc-link-purple, .mc-link-gold, .mc-link-body,
+.mc-link-hall, .mc-link-picture,
+.mc-badge-sm, .mc-badge-md { font-size: 12px !important; font-weight: 700 !important; }
+.close-btn      { font-size: 15px !important; font-weight: 800 !important; }
+.submit-btn     { font-size: 17px !important; font-weight: 800 !important; }
+.calc-btn       { font-size: 16px !important; font-weight: 800 !important; }
+.month-title    { font-size: 18px !important; font-weight: 800 !important; }
+.month-subtitle { font-size: 14px !important; font-weight: 700 !important; }
+.month-tab      { font-size: 14px !important; font-weight: 700 !important; }
+.ob-section-title { font-size: 17px !important; font-weight: 800 !important; }
+.ob-def         { font-size: 14px !important; font-weight: 700 !important; }
+.ob-formula-text { font-size: 15px !important; font-weight: 800 !important; }
+.ob-table th, .ob-table td { font-size: 14px !important; font-weight: 700 !important; }
+.gb-title       { font-size: 20px !important; font-weight: 800 !important; }
+.gb-sub         { font-size: 14px !important; font-weight: 700 !important; }
+.cert-notice    { font-size: 14px !important; font-weight: 700 !important; }
+.cert-pt        { font-size: 15px !important; font-weight: 800 !important; }
+.ppb-label      { font-size: 14px !important; font-weight: 700 !important; }
+.ppb-pct        { font-size: 22px !important; font-weight: 800 !important; }
+.ppb-meta       { font-size: 13px !important; font-weight: 700 !important; }
+.da-name        { font-size: 15px !important; font-weight: 800 !important; }
+.da-desc        { font-size: 13px !important; font-weight: 700 !important; }
+.ds-num         { font-size: 26px !important; font-weight: 800 !important; }
+.ds-label       { font-size: 13px !important; font-weight: 700 !important; }
+.private-notice { font-size: 14px !important; font-weight: 700 !important; }
+.community-notice { font-size: 14px !important; font-weight: 700 !important; }
+.sf-title       { font-size: 20px !important; font-weight: 800 !important; }
+.sf-sub         { font-size: 14px !important; font-weight: 700 !important; }
+.hall-title     { font-size: 26px !important; font-weight: 800 !important; }
+.hall-sub       { font-size: 14px !important; font-weight: 700 !important; }
+.pg-item        { font-size: 14px !important; font-weight: 700 !important; }
+.qr-desc        { font-size: 14px !important; font-weight: 700 !important; }
+.grade-title    { font-size: 16px !important; font-weight: 800 !important; }
+.grade-badge    { font-size: 13px !important; font-weight: 700 !important; }
+.toast          { font-size: 16px !important; font-weight: 800 !important; }
+.motivation-banner { font-family: 'Gaegu', sans-serif !important; }
 
-/* ── 관리자 BMI 누적 관리 ── */
-.bmi-add-row { display: flex; gap: 6px; }
-.bmi-filter-row {
-  display: flex; gap: 6px; margin: 10px 0 8px;
+/* ── 레벨업 축하 모달 ── */
+@keyframes lumIn    { 0%{opacity:0;transform:scale(0.5) rotate(-10deg)} 70%{transform:scale(1.1) rotate(3deg)} 100%{opacity:1;transform:scale(1) rotate(0deg)} }
+@keyframes lumBadge { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+@keyframes confettiFall { 0%{transform:translateY(-10px) rotate(0deg);opacity:1} 100%{transform:translateY(200px) rotate(720deg);opacity:0} }
+@keyframes starBlink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+.levelup-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 99998;
   align-items: center;
+  justify-content: center;
+  font-family: 'Gaegu', sans-serif;
 }
-.bmi-table-wrap { overflow-x: auto; margin-top: 6px; }
-.bmi-admin-table {
-  width: 100%; border-collapse: collapse;
-  font-size: 12px;
+.levelup-modal.open { display: flex; }
+
+.lum-box {
+  position: relative;
+  background: #fff;
+  border-radius: 28px;
+  padding: 36px 28px 28px;
+  width: 300px;
+  text-align: center;
+  animation: lumIn 0.6s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+  border: 3px solid #EF9F27;
 }
-.bmi-admin-table th {
-  background: #f0f0f0; padding: 6px 4px;
-  text-align: center; color: #555;
-  border-bottom: 1px solid #ddd;
-  white-space: nowrap;
+
+/* 3종 색상 테마 */
+.lum-box.theme-2 { border-color: #5DCAA5; }
+.lum-box.theme-3 { border-color: #EF9F27; }
+.lum-box.theme-4 { border-color: #7F77DD; background: linear-gradient(135deg,#EEEDFE,#fff); }
+
+.lum-confetti {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 100%;
+  pointer-events: none;
 }
-.bmi-admin-table td {
-  padding: 6px 4px; text-align: center;
-  border-bottom: 0.5px solid #f0f0f0;
-  vertical-align: middle;
+.lum-confetti span {
+  position: absolute;
+  font-size: 18px;
+  animation: confettiFall 2s ease-in forwards;
 }
-.bmi-tag {
-  display: inline-block; font-size: 10px; font-weight: 600;
-  border-radius: 999px; padding: 2px 7px; white-space: nowrap;
+
+.lum-icon  { font-size: 64px; display: inline-block; animation: none; margin-bottom: 8px; }
+.lum-badge {
+  display: inline-block;
+  background: #EF9F27;
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 4px 18px;
+  margin-bottom: 8px;
+  animation: none;
+  font-family: 'Gaegu', sans-serif;
 }
-.bmi-del-btn {
-  background: none; border: none; color: #E24B4A;
-  font-size: 13px; cursor: pointer; padding: 2px 6px;
-  border-radius: 4px;
+.lum-box.theme-2 .lum-badge { background: #1D9E75; }
+.lum-box.theme-3 .lum-badge { background: #EF9F27; }
+.lum-box.theme-4 .lum-badge { background: #7F77DD; }
+
+.lum-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  font-family: 'Gaegu', sans-serif;
 }
-.bmi-del-btn:hover { background: #FCEBEB; }
-.bmi-empty {
-  text-align: center; color: #aaa; font-size: 13px;
-  padding: 18px 0; display: none;
+.lum-msg {
+  font-size: 17px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 10px;
+  font-family: 'Gaegu', sans-serif;
 }
+.lum-stars {
+  font-size: 24px;
+  letter-spacing: 6px;
+  margin-bottom: 18px;
+  animation: none;
+}
+.lum-btn {
+  width: 100%;
+  padding: 13px;
+  background: #1D9E75;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Gaegu', sans-serif;
+  animation: none;
+}
+.lum-box.theme-4 .lum-btn { background: #7F77DD; }
+
+/* ── 미션 일일 현황 ── */
+.mission-daily-info {
+  margin-top: 12px;
+  background: #f9f9f9;
+  border: 0.5px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  text-align: center;
+  line-height: 1.6;
+}
+.mission-daily-info .mdi-done {
+  color: #1D9E75;
+  font-size: 15px;
+  font-weight: 800;
+}
+.mission-daily-info .mdi-warn {
+  color: #E24B4A;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* ── 슈퍼히어로 특별 모달 ── */
+@keyframes heroIn {
+  0%   { opacity:0; transform:scale(0.3) rotate(-15deg); }
+  60%  { transform:scale(1.15) rotate(5deg); }
+  80%  { transform:scale(0.95) rotate(-2deg); }
+  100% { opacity:1; transform:scale(1) rotate(0deg); }
+}
+@keyframes crownBounce {
+  0%,100% { transform:translateY(0) rotate(-10deg); }
+  50%     { transform:translateY(-12px) rotate(10deg); }
+}
+@keyframes heroGlow {
+  0%,100% { box-shadow: 0 0 20px 4px rgba(127,119,221,0.4); }
+  50%     { box-shadow: 0 0 40px 12px rgba(127,119,221,0.7); }
+}
+@keyframes firework {
+  0%,100% { transform:scale(1); opacity:1; }
+  50%     { transform:scale(1.4); opacity:0.7; }
+}
+@keyframes rainbowText {
+  0%   { color:#E24B4A; }
+  25%  { color:#EF9F27; }
+  50%  { color:#1D9E75; }
+  75%  { color:#7F77DD; }
+  100% { color:#E24B4A; }
+}
+
+.hero-lum-box {
+  position: relative;
+  background: linear-gradient(135deg, #1a0533 0%, #2d0a5e 40%, #1a0533 100%);
+  border-radius: 28px;
+  padding: 32px 24px 28px;
+  width: 310px;
+  text-align: center;
+  animation: heroIn 0.8s cubic-bezier(.4,0,.2,1), heroGlow 2s ease-in-out infinite 0.8s;
+  overflow: hidden;
+  border: 3px solid #7F77DD;
+}
+.hero-lum-firework {
+  font-size: 28px;
+  letter-spacing: 6px;
+  margin-bottom: 6px;
+  animation: firework 1.2s ease-in-out infinite;
+}
+.hero-lum-crown {
+  font-size: 52px;
+  display: block;
+  animation: crownBounce 1.4s ease-in-out infinite;
+  margin-bottom: 2px;
+}
+.hero-lum-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 12px rgba(255,200,50,0.8));
+}
+.hero-lum-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+  color: #1a0533;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 5px 20px;
+  margin-bottom: 8px;
+  font-family: 'Gaegu', sans-serif;
+  letter-spacing: 1px;
+}
+.hero-lum-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #FFD700;
+  margin-bottom: 4px;
+  font-family: 'Gaegu', sans-serif;
+  text-shadow: 0 0 20px rgba(255,215,0,0.8);
+  animation: rainbowText 2s ease-in-out infinite;
+}
+.hero-lum-subtitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #EEEDFE;
+  margin-bottom: 14px;
+  font-family: 'Gaegu', sans-serif;
+}
+.hero-lum-msg {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,215,0,0.4);
+  border-radius: 14px;
+  padding: 14px 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  font-family: 'Gaegu', sans-serif;
+}
+.hero-lum-gift {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
+  color: #FFD700;
+  margin-top: 4px;
+}
+.hero-lum-stars {
+  font-size: 22px;
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+}
+.hero-lum-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: #1a0533;
+  border: none;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Gaegu', sans-serif;
+  letter-spacing: 0.5px;
+}
+.hero-lum-btn:hover { opacity: 0.9; }

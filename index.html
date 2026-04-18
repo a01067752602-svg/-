@@ -2,847 +2,631 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>튼튼탐험대 출발!</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-  <style>
-    /* 교보손글씨체 */
-    @font-face {
-      font-family: 'KyoboHand';
-      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
-      font-weight: normal;
-      font-style: normal;
-    }
-    :root {
-      --title-font: 'KyoboHand', sans-serif;
-      --main-font: 'Jua', sans-serif;
-      --green:   #1D9E75;
-      --green2:  #5DCAA5;
-      --green3:  #E1F5EE;
-      --amber:   #EF9F27;
-      --amber2:  #FAEEDA;
-      --blue:    #378ADD;
-      --blue2:   #E6F1FB;
-      --purple:  #7F77DD;
-      --coral:   #D85A30;
-      --bg:      #0B0E2A;
-      --white:   #FFFFFF;
-      --ink:     #FFFFFF;
-      --ink2:    #C8D8FF;
-      --ink3:    #8899CC;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    html, body {
-      height: 100%;
-      font-family: var(--main-font);
-      background: #0B0E2A;
-      overflow-x: hidden;
-    }
-
-    /* ── SPACE SCENE ── */
-    .scene {
-      min-height: 100vh;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: linear-gradient(170deg, #04061A 0%, #0B0E2A 40%, #0E1535 70%, #0A1628 100%);
-    }
-
-    /* Star field canvas */
-    #star-canvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* Space planets SVG layer */
-    .space-bg {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%; height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Shooting stars */
-    .shoot {
-      position: absolute;
-      width: 120px; height: 2px;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
-      border-radius: 2px;
-      z-index: 2;
-      top: 0; left: -130px;
-    }
-    .sh1 { top: 10%; animation: shoot1 5s linear 1.5s infinite; }
-    .sh2 { top: 25%; animation: shoot2 7.5s linear 5s infinite; }
-    .sh3 { top: 6%;  animation: shoot3 6s linear 9s infinite; }
-    @keyframes shoot1 { from{transform:translateX(0) rotate(18deg);opacity:1;} to{transform:translateX(calc(100vw+260px)) rotate(18deg);opacity:0;} }
-    @keyframes shoot2 { from{transform:translateX(0) rotate(14deg);opacity:1;} to{transform:translateX(calc(100vw+260px)) rotate(14deg);opacity:0;} }
-    @keyframes shoot3 { from{transform:translateX(0) rotate(22deg);opacity:1;} to{transform:translateX(calc(100vw+260px)) rotate(22deg);opacity:0;} }
-
-    /* ── CONTENT WRAPPER ── */
-    .content {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 420px;
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* ── TOP BADGE ── */
-    .top-badge {
-      margin-top: 28px;
-      background: rgba(29,158,117,0.25);
-      color: #ffffff;
-      border: 1px solid rgba(93,202,165,0.4);
-      font-family: 'Jua', sans-serif;
-      font-size: 13px;
-      padding: 6px 18px;
-      border-radius: 100px;
-      letter-spacing: 0.5px;
-      animation: fadeDown 0.6s ease both;
-    }
-
-    /* ── MASCOT AREA ── */
-    .mascot-wrap {
-      margin-top: 10px;
-      width: 220px;
-      height: 220px;
-      position: relative;
-      animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
-    }
-
-    .mascot-circle {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #1A2050 0%, #2A3080 100%);
-      border: 2px solid rgba(127,119,221,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 90px;
-      box-shadow: 0 8px 40px rgba(127,119,221,0.35), 0 0 60px rgba(55,138,221,0.15);
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .mascot-star {
-      position: absolute;
-      font-size: 22px;
-      animation: spin 4s linear infinite;
-    }
-    .ms1 { top: 10px; right: 10px; animation-delay: 0s; }
-    .ms2 { bottom: 20px; left: 5px; animation-delay: 1.5s; font-size: 16px; }
-    .ms3 { top: 50%; right: -5px; animation-delay: 0.8s; font-size: 14px; }
-
-    @keyframes float {
-      0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-10px); }
-    }
-    @keyframes spin {
-      0%   { transform: rotate(0deg) scale(1); }
-      50%  { transform: rotate(180deg) scale(1.2); }
-      100% { transform: rotate(360deg) scale(1); }
-    }
-
-    /* ── TITLE ── */
-    .title-block {
-      text-align: center;
-      animation: fadeUp 0.7s ease 0.4s both;
-    }
-
-    .title-sub {
-      font-family: 'Jua', sans-serif;
-      font-size: 15px;
-      color: rgba(200,216,255,0.85);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-      
-    }
-
-    .title-main {
-      font-family: var(--title-font);
-      font-size: clamp(26px, 7vw, 32px);
-      line-height: 1.25;
-      color: #FFFFFF;
-      margin-bottom: 6px;
-    }
-    .title-main .highlight {
-      color: #ffffff;
-      position: relative;
-      display: inline-block;
-    }
-    .title-main .highlight::after {
-      content: '';
-      position: absolute;
-      bottom: 2px; left: 0; right: 0;
-      height: 6px;
-      background: rgba(29,158,117,0.2);
-      border-radius: 3px;
-      z-index: -1;
-    }
-
-    .title-brand {
-      font-family: var(--title-font);
-      font-size: clamp(30px, 8.5vw, 38px);
-      color: #fff;
-      line-height: 1.1;
-      
-      
-    }
-    @keyframes shimmerText {
-      0%,100% {  }
-      50%      { text-shadow: 0 0 30px rgba(127,232,192,1),   0 0 60px rgba(93,202,165,0.7), 0 0 80px rgba(55,138,221,0.3); }
-    }
-    .title-brand em {
-      font-style: normal;
-      color: #ffffff;
-      
-    }
-
-    /* ── TAGLINE CARD ── */
-    .tagline-card {
-      margin-top: 20px;
-      width: 100%;
-      background: rgba(255,255,255,0.06);
-      border-radius: 20px;
-      padding: 18px 22px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-      border: 1px solid rgba(127,119,221,0.25);
-      animation: fadeUp 0.7s ease 0.55s both;
-      backdrop-filter: blur(6px);
-    }
-
-    .tagline-card p {
-      font-size: 15px;
-      color: rgba(255,255,255,0.9);
-      line-height: 1.7;
-      text-align: center;
-    }
-    .tagline-card p strong {
-      color: #ffffff;
-    }
-
-    /* ── LEVEL PREVIEW PILLS ── */
-    .level-pills {
-      margin-top: 20px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp 0.7s ease 0.7s both;
-    }
-
-    .pill {
-      padding: 7px 14px;
-      border-radius: 100px;
-      font-family: 'Jua', sans-serif;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border: 1.5px solid transparent;
-      transition: transform 0.2s;
-    }
-    .pill:hover { transform: scale(1.05); }
-    .pill-1 { background: var(--green3); color: #0F6E56; border-color: rgba(93,202,165,0.4); }
-    .pill-2 { background: #E8F3FC; color: #185FA5; border-color: rgba(55,138,221,0.3); }
-    .pill-3 { background: #FAEEDA; color: #854F0B; border-color: rgba(239,159,39,0.3); }
-    .pill-4 { background: #FAECE7; color: #993C1D; border-color: rgba(216,90,48,0.3); }
-
-    /* ── GIFT BANNER ── */
-    .gift-banner {
-      margin-top: 18px;
-      width: 100%;
-      background: rgba(239,159,39,0.1);
-      border-radius: 16px;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border: 1.5px dashed rgba(239,159,39,0.5);
-      animation: fadeUp 0.7s ease 0.85s both;
-    }
-
-    .gift-icon {
-      font-size: 32px;
-      flex-shrink: 0;
-      animation: wiggle 2s ease-in-out infinite;
-    }
-
-    @keyframes wiggle {
-      0%,100% { transform: rotate(-5deg); }
-      50%      { transform: rotate(5deg); }
-    }
-
-    .gift-text {
-      font-size: 13.5px;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.5;
-    }
-    .gift-text strong {
-      display: block;
-      font-size: 15px;
-      color: #ffffff;
-      font-weight: 900;
-    }
-
-    /* ── CTA BUTTON ── */
-    .cta-wrap {
-      margin-top: 24px;
-      margin-bottom: 40px;
-      width: 100%;
-      animation: fadeUp 0.7s ease 1s both;
-    }
-
-    .cta-btn {
-      width: 100%;
-      padding: 18px;
-      background: var(--green);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      font-family: 'Jua', sans-serif;
-      font-size: 22px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 6px 24px rgba(29,158,117,0.4), 0 2px 8px rgba(29,158,117,0.3);
-      transition: transform 0.15s, box-shadow 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .cta-btn::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      animation: shimmer 2.5s ease infinite;
-    }
-
-    @keyframes shimmer {
-      from { left: -100%; }
-      to   { left: 200%; }
-    }
-
-    .cta-btn:active {
-      transform: scale(0.97);
-      box-shadow: 0 3px 12px rgba(29,158,117,0.3);
-    }
-
-    .cta-arrow {
-      font-size: 24px;
-      animation: arrowBounce 1s ease-in-out infinite;
-    }
-
-    @keyframes arrowBounce {
-      0%,100% { transform: translateX(0); }
-      50%      { transform: translateX(6px); }
-    }
-
-    /* ── BOTTOM DECORATION ── */
-    .bottom-deco {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    /* ── TWINKLING STAR DOTS ── */
-    .star-deco {
-      position: absolute;
-      font-size: 18px;
-      opacity: 0.6;
-      animation: twinkle 2.5s ease-in-out infinite;
-      z-index: 2;
-      color: #fff;
-    }
-    .sd1 { top: 22%; left: 8%;  animation-delay: 0.3s; font-size: 12px; }
-    .sd2 { top: 30%; right: 10%; animation-delay: 1.1s; font-size: 16px; }
-    .sd3 { top: 18%; right: 20%; animation-delay: 0.7s; font-size: 10px; }
-    .sd4 { top: 44%; left: 5%;   animation-delay: 1.6s; font-size: 14px; }
-
-    @keyframes twinkle {
-      0%,100% { opacity: 0.3; transform: scale(1); }
-      50%      { opacity: 0.8; transform: scale(1.3); }
-    }
-
-    /* ── SCROLL REVEAL ANIMATIONS ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes bounceIn {
-      from { opacity: 0; transform: scale(0.5); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-
-    /* ── RIPPLE ON CLICK ── */
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      transform: scale(0);
-      animation: rippleAnim 0.6s linear;
-      pointer-events: none;
-    }
-    @keyframes rippleAnim {
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    /* ── PAGE TRANSITION ── */
-    .page-out {
-      animation: pageOut 0.5s ease forwards !important;
-    }
-    @keyframes pageOut {
-      to { opacity: 0; transform: scale(1.03); }
-    }
-
-    /* ── NAV BAR ── */
-    .nav-bar {
-      position: fixed; bottom: 24px; left: 0; right: 0;
-      z-index: 100; display: flex; justify-content: center;
-      gap: 14px; padding: 0 24px; pointer-events: none;
-    }
-    .nav-btn {
-      pointer-events: auto;
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.18); border-radius: 100px;
-      padding: 10px 22px; font-family: 'Jua', sans-serif;
-      font-size: 14px; color: #fff; cursor: pointer;
-      transition: transform 0.15s, background 0.15s;
-      flex: 1; max-width: 160px; justify-content: center;
-    }
-    .nav-btn:active { transform: scale(0.95); }
-    .nav-btn.prev { background: rgba(255,255,255,0.06); opacity: 0.4; pointer-events: none; }
-    .nav-btn.next { background: rgba(29,158,117,0.3); border-color: rgba(93,202,165,0.35); }
-    /* ── 관리자 버튼 ── */
-    .admin-float-btn{position:fixed;top:14px;right:14px;z-index:50;background:rgba(40,40,40,0.85);backdrop-filter:blur(8px);color:rgba(200,210,220,0.9);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 14px;font-family:var(--main-font);font-size:12px;cursor:pointer;transition:background 0.15s;}
-    .admin-float-btn:active{transform:scale(0.95);}
-    .admin-modal-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;}
-    .admin-modal-wrap.open{display:flex;}
-    .admin-modal-box{background:#fff;border-radius:20px;padding:28px 24px 22px;width:280px;text-align:center;}
-    .admin-modal-icon{font-size:36px;margin-bottom:8px;}
-    .admin-modal-title{font-size:17px;font-weight:700;color:#1a1a1a;margin-bottom:4px;font-family:var(--main-font);}
-    .admin-modal-sub{font-size:12px;color:#888;margin-bottom:14px;font-family:var(--main-font);}
-    .admin-modal-input{width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:16px;text-align:center;color:#1a1a1a;margin-bottom:6px;outline:none;}
-    .admin-modal-input:focus{border-color:#1D9E75;}
-    .admin-modal-err{font-size:12px;color:#E24B4A;min-height:18px;margin-bottom:10px;font-family:var(--main-font);}
-    .admin-modal-btns{display:flex;gap:8px;}
-    .admin-modal-cancel{flex:1;padding:10px;border:1.5px solid #e0e0e0;border-radius:10px;background:#f5f5f5;color:#666;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--main-font);}
-    .admin-modal-confirm{flex:1;padding:10px;border:none;border-radius:10px;background:#1D9E75;color:white;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--main-font);}
-    .dash-panel{display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.5);align-items:flex-end;justify-content:center;}
-    .dash-panel.open{display:flex;}
-    .dash-inner{width:100%;max-width:430px;max-height:90vh;background:#fff;border-radius:24px 24px 0 0;overflow-y:auto;padding:20px 18px 40px;}
-    .dash-handle{width:36px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto 16px;}
-    .dash-title{font-family:var(--main-font);font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
-    .dash-sec-title{font-family:var(--main-font);font-size:13px;font-weight:700;color:#1a1a1a;margin:16px 0 10px;display:flex;align-items:center;gap:5px;}
-    .dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px;}
-    .dash-stat{background:#f9f9f9;border-radius:10px;padding:12px 6px;text-align:center;border:0.5px solid #e8e8e8;}
-    .ds-num{font-size:22px;font-weight:700;color:#1D9E75;font-family:var(--main-font);}
-    .ds-label{font-size:10px;color:#888;margin-top:3px;font-family:var(--main-font);}
-    .bmi-table{width:100%;border-collapse:collapse;font-family:var(--main-font);font-size:12px;}
-    .bmi-table th{background:#f0f0f0;padding:7px 6px;text-align:center;color:#555;font-weight:600;border-bottom:1px solid #e0e0e0;}
-    .bmi-table td{padding:7px 6px;text-align:center;border-bottom:0.5px solid #f0f0f0;color:#333;}
-    .bmi-table tr:last-child td{border-bottom:none;}
-    .dash-grant{display:flex;flex-direction:column;gap:8px;}
-    .dash-input{width:100%;padding:9px 12px;border:0.5px solid #e0e0e0;border-radius:8px;font-size:13px;color:#1a1a1a;background:#fff;font-family:var(--main-font);outline:none;}
-    .dash-grant-row{display:flex;gap:8px;}
-    .dash-grant-btn{padding:9px 16px;background:#1D9E75;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--main-font);}
-    .grant-log{font-size:12px;color:#555;max-height:100px;overflow-y:auto;margin-top:6px;font-family:var(--main-font);}
-    .grant-log-item{padding:5px 0;border-bottom:0.5px solid #f0f0f0;display:flex;justify-content:space-between;}
-    .dash-close-btn{width:100%;padding:12px;background:#2C2C2A;color:#D3D1C7;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--main-font);margin-top:16px;}
-    .dash-tabs{display:flex;gap:4px;margin-bottom:14px;background:#f5f5f5;padding:4px;border-radius:12px;}
-    .dash-tab{flex:1;padding:8px 4px;border:none;background:transparent;border-radius:9px;font-family:var(--main-font);font-size:12px;font-weight:600;color:#888;cursor:pointer;transition:all 0.2s;}
-    .dash-tab.active{background:#fff;color:#1D9E75;box-shadow:0 1px 6px rgba(0,0,0,0.1);}
-    .dash-tab-panel{display:none;}
-    .dash-tab-panel.active{display:block;}
-    .lv-dist-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-    .lv-dist-label{font-family:var(--main-font);font-size:11px;color:#555;width:54px;flex-shrink:0;}
-    .lv-dist-bar-wrap{flex:1;background:#f0f0f0;border-radius:6px;height:14px;overflow:hidden;}
-    .lv-dist-bar{height:100%;border-radius:6px;transition:width 0.5s ease;}
-    .lv-dist-count{font-family:var(--main-font);font-size:11px;color:#888;width:20px;text-align:right;flex-shrink:0;}
-    .dash-memo{width:100%;min-height:80px;padding:10px 12px;border:0.5px solid #e0e0e0;border-radius:8px;font-size:12px;font-family:var(--main-font);color:#333;resize:vertical;outline:none;line-height:1.5;}
-    .dash-memo:focus{border-color:#1D9E75;}
-    .memo-save-btn{padding:7px 14px;background:#1D9E75;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--main-font);}
-    .memo-saved-msg{font-size:11px;color:#1D9E75;font-family:var(--main-font);min-height:16px;}
-    .dash-print-btn{width:100%;padding:10px;background:#378ADD;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--main-font);margin-top:8px;}
-    .dash-notice{background:#FFF9E6;border:1px solid #FFE082;border-radius:8px;padding:10px 12px;font-size:11px;color:#7A5800;font-family:var(--main-font);line-height:1.6;margin-bottom:8px;}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="scene">
 
-  <!-- Star canvas -->
-  <canvas id="star-canvas"></canvas>
+<div class="app">
 
-  <!-- 관리자 버튼 -->
-  <button class="admin-float-btn" onclick="openAdminLogin()">🔐 교사</button>
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-top-bar">
+      <div class="header-spacer"></div>
+      <button class="admin-btn" onclick="openAdminLogin()">🔐 관리자</button>
+    </div>
+    <div class="header-logo">🧭</div>
+    <div class="header-title"><span>튼튼탐험대</span> 출발!</div>
+    <div class="header-sub">튼튼하고 건강한 '나' 만들기 프로젝트</div>
+  </div>
+
+  <!-- 레벨업 축하 모달 (1→2단계 / 2→3단계 공용) -->
+  <div class="levelup-modal" id="levelup-modal">
+    <div class="lum-box" id="lum-box">
+      <div class="lum-confetti" id="lum-confetti"></div>
+      <div class="lum-icon" id="lum-icon">🧭</div>
+      <div class="lum-badge" id="lum-badge">2단계</div>
+      <div class="lum-title" id="lum-title">튼튼탐험가</div>
+      <div class="lum-msg" id="lum-msg">축하해요! 레벨업!</div>
+      <div class="lum-stars" id="lum-stars">⭐ ⭐ ⭐</div>
+      <button class="lum-btn" id="lum-btn" onclick="closeLevelup()">계속 도전! →</button>
+    </div>
+  </div>
+
+  <!-- 슈퍼히어로 특별 모달 (3→4단계) -->
+  <div class="levelup-modal" id="hero-modal">
+    <div class="hero-lum-box">
+      <div class="lum-confetti" id="hero-confetti"></div>
+      <div class="hero-lum-firework">🎆🎇🎆</div>
+      <div class="hero-lum-crown">👑</div>
+      <div class="hero-lum-icon">🦸</div>
+      <div class="hero-lum-badge">4단계 달성!</div>
+      <div class="hero-lum-title">슈퍼히어로!</div>
+      <div class="hero-lum-subtitle">최고 레벨 완전 정복!</div>
+      <div class="hero-lum-msg">
+        🎁 아주 특별한 선물이<br>기다리고 있어요!<br>
+        <span class="hero-lum-gift">선생님께 확인하세요! 🎀</span>
+      </div>
+      <div class="hero-lum-stars">🌟 👑 🌟 👑 🌟</div>
+      <button class="hero-lum-btn" onclick="closeHeroModal()">🦸 나는 슈퍼히어로! 🦸</button>
+    </div>
+  </div>
 
   <!-- 비밀번호 모달 -->
-  <div class="admin-modal-wrap" id="admin-modal">
-    <div class="admin-modal-box">
-      <div class="admin-modal-icon">🔐</div>
-      <div class="admin-modal-title">교사 대시보드</div>
-      <div class="admin-modal-sub">비밀번호를 입력해 주세요</div>
-      <input class="admin-modal-input" id="admin-pw" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkAdmin()"/>
-      <div class="admin-modal-err" id="admin-err"></div>
-      <div class="admin-modal-btns">
-        <button class="admin-modal-cancel" onclick="closeAdminLogin()">취소</button>
-        <button class="admin-modal-confirm" onclick="checkAdmin()">확인</button>
+  <div class="modal-wrap" id="admin-modal">
+    <div class="modal-box">
+      <div class="modal-icon">🔐</div>
+      <div class="modal-title">관리자 로그인</div>
+      <div class="modal-sub">비밀번호를 입력해 주세요</div>
+      <input class="modal-input" type="password" id="admin-pw" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkAdmin()">
+      <div class="modal-err" id="admin-err"></div>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="closeAdminLogin()">취소</button>
+        <button class="modal-confirm" onclick="checkAdmin()">확인</button>
       </div>
     </div>
   </div>
 
-  <!-- 교사 대시보드 패널 -->
-  <div class="dash-panel" id="dash-panel">
-    <div class="dash-inner">
-      <div class="dash-handle"></div>
-      <div class="dash-title">📊 교사 대시보드
-        <span style="margin-left:auto;font-size:11px;color:#aaa;font-family:var(--main-font);font-weight:400;" id="dash-datetime"></span>
+  <!-- 교사용 대시보드 패널 -->
+  <div class="panel" id="panel-admin">
+    <div class="ph">
+      <div class="ph-icon">📊</div>
+      <h2>교사용 대시보드</h2>
+      <button class="close-btn" onclick="closePanel('panel-admin')">닫기</button>
+    </div>
+
+    <!-- 요약 통계 -->
+    <div class="dash-stats">
+      <div class="dash-stat">
+        <div class="ds-num" id="ds-total">24</div>
+        <div class="ds-label">전체 학생</div>
       </div>
-      <div class="dash-tabs">
-        <button class="dash-tab active" onclick="switchTab('tab-stats')">📈 현황</button>
-        <button class="dash-tab" onclick="switchTab('tab-bmi')">⚖️ BMI</button>
-        <button class="dash-tab" onclick="switchTab('tab-grant')">🎁 지급</button>
-        <button class="dash-tab" onclick="switchTab('tab-memo')">📝 메모</button>
-        <button class="dash-tab" onclick="switchTab('tab-settings')">⚙️ 설정</button>
+      <div class="dash-stat">
+        <div class="ds-num" id="ds-active">18</div>
+        <div class="ds-label">이번 주 참여</div>
       </div>
-      <div class="dash-tab-panel active" id="tab-stats">
-        <div class="dash-stats">
-          <div class="dash-stat"><div class="ds-num" id="ds-total">0</div><div class="ds-label">전체 포인트</div></div>
-          <div class="dash-stat"><div class="ds-num" id="ds-records">0</div><div class="ds-label">BMI 기록 수</div></div>
-          <div class="dash-stat"><div class="ds-num" id="ds-level">-</div><div class="ds-label">현재 레벨</div></div>
+      <div class="dash-stat">
+        <div class="ds-num" id="ds-levelup">5</div>
+        <div class="ds-label">레벨업 달성</div>
+      </div>
+      <div class="dash-stat">
+        <div class="ds-num" id="ds-avg">340</div>
+        <div class="ds-label">평균 포인트</div>
+      </div>
+    </div>
+
+    <!-- 레벨 분포 -->
+    <div class="dash-section">
+      <div class="dash-section-title">📈 단계별 학생 분포</div>
+      <div class="dash-level-bars">
+        <div class="dlb-row">
+          <span class="dlb-label">🌱 건강새내기</span>
+          <div class="dlb-track"><div class="dlb-fill dlb-s1" style="width:50%"></div></div>
+          <span class="dlb-num">12명</span>
         </div>
-        <div class="dash-sec-title" style="margin-top:14px;">🏆 레벨 진행도</div>
-        <div id="dash-lv-dist"></div>
-        <div class="dash-sec-title" style="margin-top:14px;">✅ 미션 완료 현황</div>
-        <div id="dash-mission-stat" style="font-family:var(--main-font);font-size:12px;color:#555;"></div>
-        <button class="dash-print-btn" onclick="printDash()">🖨️ 현황 인쇄 / PDF 저장</button>
+        <div class="dlb-row">
+          <span class="dlb-label">🧭 튼튼탐험가</span>
+          <div class="dlb-track"><div class="dlb-fill dlb-s2" style="width:33%"></div></div>
+          <span class="dlb-num">8명</span>
+        </div>
+        <div class="dlb-row">
+          <span class="dlb-label">🏅 건강챔피언</span>
+          <div class="dlb-track"><div class="dlb-fill dlb-s3" style="width:12%"></div></div>
+          <span class="dlb-num">3명</span>
+        </div>
+        <div class="dlb-row">
+          <span class="dlb-label">🦸 슈퍼히어로</span>
+          <div class="dlb-track"><div class="dlb-fill dlb-s4" style="width:4%"></div></div>
+          <span class="dlb-num">1명</span>
+        </div>
       </div>
-      <div class="dash-tab-panel" id="tab-bmi">
-        <div class="dash-notice">💡 학생의 BMI 기록은 기기에 저장돼요.</div>
-        <table class="bmi-table"><thead><tr><th>월</th><th>키</th><th>몸무게</th><th>BMI</th><th>판정</th></tr></thead><tbody id="dash-bmi-tbody"></tbody></table>
-        <div id="dash-bmi-empty" style="text-align:center;color:#aaa;font-size:12px;padding:14px;font-family:var(--main-font);">아직 기록이 없어요</div>
-        <button class="dash-print-btn" style="background:#EF9F27;margin-top:12px;" onclick="clearBmi()">🗑️ BMI 기록 초기화</button>
+    </div>
+
+    <!-- 알림 -->
+    <div class="dash-section">
+      <div class="dash-section-title">⚠️ 관찰 필요 학생</div>
+      <div class="dash-alert warn">
+        <span class="da-icon">😴</span>
+        <div class="da-body">
+          <div class="da-name">3주 이상 미참여</div>
+          <div class="da-desc">강도현 · 윤채원 · 오준서 — 개별 독려 필요</div>
+        </div>
       </div>
-      <div class="dash-tab-panel" id="tab-grant">
-        <div class="dash-sec-title" style="margin-top:0;">🎁 포인트 수동 지급</div>
-        <div class="dash-grant">
-          <input class="dash-input" id="grant-name" placeholder="학생 이름 (기록용)"/>
-          <div class="dash-grant-row">
-            <input class="dash-input" id="grant-reason" placeholder="사유" style="flex:2;"/>
-            <input class="dash-input" id="grant-pt" type="number" value="5" min="1" style="flex:1;text-align:center;"/>
-            <button class="dash-grant-btn" onclick="grantPoint()">지급</button>
+      <div class="dash-alert good">
+        <span class="da-icon">🔥</span>
+        <div class="da-body">
+          <div class="da-name">레벨업 임박</div>
+          <div class="da-desc">김민준 · 이서연 — 이번 주 달성 가능!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 포인트 수동 지급 -->
+    <div class="dash-section">
+      <div class="dash-section-title">🪙 포인트 수동 지급</div>
+      <div class="dash-grant">
+        <select class="dash-select" id="grant-name">
+          <option value="">학생 선택</option>
+          <option>김민준</option>
+          <option>이서연</option>
+          <option>박지후</option>
+          <option>최수아</option>
+          <option>정하은</option>
+          <option>강도현</option>
+          <option>윤채원</option>
+          <option>오준서</option>
+        </select>
+        <select class="dash-select" id="grant-reason">
+          <option>미션 완료</option>
+          <option>퀴즈 정답</option>
+          <option>개근 보너스</option>
+          <option>레벨업 보너스</option>
+          <option>선생님 재량</option>
+        </select>
+        <div class="dash-grant-row">
+          <input class="dash-input" type="number" id="grant-pt" placeholder="포인트" value="5" min="1" max="100">
+          <button class="dash-grant-btn" onclick="grantPoint()">지급 ➕</button>
+        </div>
+      </div>
+      <div class="grant-log" id="grant-log"></div>
+    </div>
+
+    <!-- 월별 현황 -->
+    <div class="dash-section">
+      <div class="dash-section-title">📅 월별 참여 현황</div>
+      <div class="dash-month-grid">
+        <div class="dmg-cell dmg-done"><div class="dmg-m">6월</div><div class="dmg-v">89%</div></div>
+        <div class="dmg-cell dmg-done"><div class="dmg-m">7월</div><div class="dmg-v">82%</div></div>
+        <div class="dmg-cell dmg-done"><div class="dmg-m">8월</div><div class="dmg-v">76%</div></div>
+        <div class="dmg-cell dmg-now"><div class="dmg-m">9월</div><div class="dmg-v">79%</div></div>
+        <div class="dmg-cell dmg-future"><div class="dmg-m">10월</div><div class="dmg-v">-</div></div>
+        <div class="dmg-cell dmg-future"><div class="dmg-m">11월</div><div class="dmg-v">-</div></div>
+        <div class="dmg-cell dmg-future"><div class="dmg-m">12월</div><div class="dmg-v">-</div></div>
+      </div>
+    </div>
+
+    <button class="dash-logout-btn" onclick="closePanel('panel-admin'); showToast('관리자 화면을 닫았어요')">대시보드 닫기</button>
+  </div>
+
+  <!-- 동기부여 문구 배너 — 레벨바 위 -->
+  <div class="motivation-banner">
+    <div class="mb-text">
+      포인트를 모으면 레벨이 올라가요!<br>
+      <span class="mb-levels">1단계(건강새내기) → 2단계(튼튼탐험가) → 3단계(건강챔피언) → 4단계(슈퍼히어로)</span><br>
+      가 되면 아주 특별한 🎁🎀🎉 <strong>선물이 기다리고 있어요!</strong><br>
+      <span class="mb-question">과연 어떤 선물일까요? 지금부터 도전해볼까요?</span>
+    </div>
+  </div>
+
+  <!-- 레벨 & 포인트 바 -->
+  <div class="level-bar">
+    <div class="level-row">
+      <div class="level-icon" id="cur-icon">🌱</div>
+      <div class="level-info">
+        <div class="level-name" id="cur-level">1단계: 건강새내기</div>
+        <div class="level-sub" id="cur-next">다음 단계까지 포인트 180개 더!</div>
+      </div>
+      <div class="coin-box">
+        <div class="coin-num" id="coin-count">20</div>
+        <div class="coin-lbl">⭐ 탐험 포인트</div>
+      </div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-track">
+        <div class="prog-fill" id="prog-fill" style="width:10%"></div>
+      </div>
+      <div class="prog-labels">
+        <span>0</span>
+        <span id="prog-max">200포인트</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 알림 -->
+  <div class="toast-wrap">
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <!-- 메인 메뉴 -->
+  <div id="main-menu">
+
+    <!-- 행 1: 신청서 (작게) + 오늘의 미션 (크게 강조) -->
+    <div class="menu-row-top">
+
+      <!-- 신청서: 작은 가로형 카드 -->
+      <div class="menu-card menu-card-sm" onclick="openPanel('panel-apply')">
+        <div class="mc-icon-sm">📋</div>
+        <div class="mc-body-sm">
+          <div class="mc-title-sm">신청서/동의서/사전 설문지</div>
+          <div class="mc-link mc-badge-sm">📝 Google Forms</div>
+        </div>
+      </div>
+
+      <!-- 오늘의 미션: 크고 강조된 히어로 카드 -->
+      <div class="menu-card menu-card-hero" onclick="openPanel('panel-mission')">
+        <div class="hero-icon">🍀</div>
+        <div class="hero-title">오늘의 미션</div>
+        <div class="hero-desc">매일 저녁,<br>운동미션을 인증하세요!</div>
+        <div class="hero-badge">+5~10포인트</div>
+        <div class="hero-cta">지금 바로 인증하기 →</div>
+      </div>
+    </div>
+
+    <!-- 행 2: 도전 & 챌린지 섹션 라벨 -->
+    <div class="menu-section-label">⚽ 도전 및 챌린지</div>
+    <div class="menu-row-3col">
+      <div class="menu-card menu-card-md" onclick="openPanel('panel-quiz')">
+        <div class="mc-icon-md">🔔</div>
+        <div class="mc-title-md">도전! 골든벨</div>
+        <div class="mc-link-gold mc-badge-md">+5포인트 인증</div>
+      </div>
+      <div class="menu-card menu-card-md" onclick="openPanel('panel-body')">
+        <div class="mc-icon-md">🎬</div>
+        <div class="mc-title-md">숏폼 챌린지</div>
+        <div class="mc-link-purple mc-badge-md">📌 Padlet</div>
+      </div>
+      <div class="menu-card menu-card-md" onclick="openPanel('panel-body-score')">
+        <div class="mc-icon-md">💗</div>
+        <div class="mc-title-md">체중 입력<br><span style="font-size:10px;font-weight:400">(Body Score)</span></div>
+        <div class="mc-link-body mc-badge-md">6~12월 기록</div>
+      </div>
+    </div>
+
+    <!-- 행 3: 신난다! 재미있다!! 섹션 -->
+    <div class="menu-section-label">🎉 신난다! 재미있다!!</div>
+    <div class="menu-row-2col">
+      <div class="menu-card menu-card-half" onclick="openPanel('panel-tips')">
+        <div class="mc-icon-md">📺</div>
+        <div class="mc-title-md">쏙쏙 건강채널</div>
+        <div class="mc-desc-sm">건강 정보 채널 바로가기</div>
+        <div class="mc-link-teal mc-badge-md">📌 Padlet</div>
+      </div>
+      <div class="menu-card picture-card menu-card-half" onclick="openPanel('panel-picture')">
+        <div class="mc-icon-md">🖼️</div>
+        <div class="mc-title-md">이달의 퍼즐</div>
+        <div class="mc-desc-sm">포인트 모아 퍼즐 완성!</div>
+        <div class="mc-link-picture mc-badge-md">🎨 채워가기</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 패널들 ===== -->
+
+  <!-- 1. 신청서/동의서/사전 설문지 -->
+  <div class="panel" id="panel-apply">
+    <div class="ph">
+      <div class="ph-icon">📋</div>
+      <h2>신청서 / 동의서 / 사전 설문지</h2>
+      <button class="close-btn" onclick="closePanel('panel-apply')">닫기</button>
+    </div>
+    <div class="mini-banner mini-banner-teal" style="margin-bottom:16px">
+      <span class="mini-banner-icon">📝</span>
+      <div>
+        <div class="mini-banner-title">튼튼하고 건강한 '나' 만들기 프로젝트</div>
+        <div class="mini-banner-sub">신청서 · 동의서 · 사전 설문지가 포함되어 있어요</div>
+      </div>
+    </div>
+    <a class="ext-btn-big ext-btn-big-teal" href="https://docs.google.com/forms/d/10Hd0DfOwFndrI78kb3JqTVuPSH6wFnBUkieXcYyQ_e4/viewform" target="_blank">
+      <span class="ebb-icon">📋</span>
+      <span class="ebb-text">
+        <span class="ebb-main">튼튼하고 건강한 '나' 만들기 프로젝트</span>
+        <span class="ebb-sub">Google Forms 바로가기 →</span>
+      </span>
+    </a>
+    <div class="ext-notice ext-notice-green">버튼을 누르면 Google Forms 신청서가 열려요!</div>
+  </div>
+
+  <!-- 2. 오늘의 미션 -->
+  <div class="panel" id="panel-mission">
+    <div class="ph">
+      <div class="ph-icon">🍀</div>
+      <h2>오늘의 미션</h2>
+      <button class="close-btn" onclick="closePanel('panel-mission')">닫기</button>
+    </div>
+    <p class="panel-desc">미션을 완료하면 탐험 포인트가 쌓여요!</p>
+    <div class="mission-list">
+      <div class="mission-item" id="m1">
+        <div class="mi-icon">💧</div>
+        <div class="mi-text">물 6컵 마시기<div class="mi-sub">건강한 수분 섭취</div></div>
+        <div class="mi-right"><div class="mi-pt">+5P</div><button class="m-btn" id="btn-m1" onclick="doMission('m1',5)">완료!</button></div>
+      </div>
+      <div class="mission-item" id="m2">
+        <div class="mi-icon">🥗</div>
+        <div class="mi-text">채소 반찬 먹기<div class="mi-sub">오늘 식사에 채소 포함</div></div>
+        <div class="mi-right"><div class="mi-pt">+5P</div><button class="m-btn" id="btn-m2" onclick="doMission('m2',5)">완료!</button></div>
+      </div>
+      <div class="mission-item" id="m3">
+        <div class="mi-icon">🚶</div>
+        <div class="mi-text">30분 걷기 또는 운동<div class="mi-sub">신체 활동 실천</div></div>
+        <div class="mi-right"><div class="mi-pt">+8P</div><button class="m-btn" id="btn-m3" onclick="doMission('m3',8)">완료!</button></div>
+      </div>
+      <div class="mission-item" id="m4">
+        <div class="mi-icon">🍚</div>
+        <div class="mi-text">아침밥 먹기<div class="mi-sub">하루를 건강하게 시작</div></div>
+        <div class="mi-right"><div class="mi-pt">+5P</div><button class="m-btn" id="btn-m4" onclick="doMission('m4',5)">완료!</button></div>
+      </div>
+      <div class="mission-item" id="m5">
+        <div class="mi-icon">📵</div>
+        <div class="mi-text">스마트폰 2시간 이하<div class="mi-sub">활동적인 생활 유지</div></div>
+        <div class="mi-right"><div class="mi-pt">+7P</div><button class="m-btn" id="btn-m5" onclick="doMission('m5',7)">완료!</button></div>
+      </div>
+    </div>
+    <!-- 오늘 미션 현황 -->
+    <div class="mission-daily-info" id="mission-daily-info"></div>
+    <div class="padlet-bottom-card">
+      <div class="pbc-icon">🍀</div>
+      <div class="pbc-body">
+        <div class="pbc-title">운동 미션 인증</div>
+        <div class="pbc-sub">매일 저녁 운동 후 Padlet에 인증해요! (완주 청완초)</div>
+      </div>
+      <a class="pbc-btn" href="https://padlet.com/a01067752602/padlet-il6qwpw58h6dyssw" target="_blank">인증하기 →</a>
+    </div>
+  </div>
+
+  <!-- 3. 도전! 골든벨 -->
+  <div class="panel" id="panel-quiz">
+    <div class="ph">
+      <div class="ph-icon">🔔</div>
+      <h2>도전! 골든벨 서바이벌 퀴즈</h2>
+      <button class="close-btn" onclick="closePanel('panel-quiz')">닫기</button>
+    </div>
+    <div class="golden-bell-banner">
+      <div class="gb-icon">🔔</div>
+      <div class="gb-title">골든벨을 울려라!</div>
+      <div class="gb-sub">띵커벨 QR을 찍고 퀴즈에 도전하세요!<br>마지막 화면을 캡처해서 인증하면 포인트 GET!<br><span style="color:#BA7517;font-weight:600">📅 매주 수요일 새 퀴즈가 업데이트돼요!</span></div>
+    </div>
+    <!-- 저학년 -->
+    <div class="grade-section low">
+      <div class="grade-hd">
+        <span class="grade-emoji">🌱</span>
+        <span class="grade-title">저학년 도전</span>
+        <span class="grade-badge">1 · 2 · 3학년</span>
+      </div>
+      <div class="qr-box">
+        <img src="qr_low.png" alt="저학년 QR코드" class="qr-img">
+        <div class="qr-desc">📷 카메라로 QR을 찍으면 바로 참여돼요!</div>
+      </div>
+    </div>
+    <!-- 고학년 -->
+    <div class="grade-section high">
+      <div class="grade-hd">
+        <span class="grade-emoji">🏅</span>
+        <span class="grade-title">고학년 도전</span>
+        <span class="grade-badge">4 · 5 · 6학년</span>
+      </div>
+      <div class="qr-box">
+        <img src="qr_high.png" alt="고학년 QR코드" class="qr-img">
+        <div class="qr-desc">📷 카메라로 QR을 찍으면 바로 참여돼요!</div>
+      </div>
+    </div>
+    <div class="cert-notice">
+      <span class="cert-icon">📸</span>
+      <span>퀴즈 마지막 화면을 캡처해서 인증하면 <span class="cert-pt">포인트 +5</span> 획득!</span>
+    </div>
+    <div class="padlet-proof-card">
+      <div class="ppc-icon">🏆</div>
+      <div class="ppc-body">
+        <div class="ppc-title">인증샷 올리기</div>
+        <div class="ppc-sub">퀴즈 결과 캡처 → Padlet에 올리면 포인트 지급!</div>
+      </div>
+      <a class="ppc-btn" href="https://padlet.com/a01067752602/padlet-59fg3k9ls5gjuarn" target="_blank">인증하기 →</a>
+    </div>
+  </div>
+
+  <!-- 4. 이번달 내 몸은 몇점? -->
+  <div class="panel" id="panel-body-score">
+    <div class="ph">
+      <div class="ph-icon">💗</div>
+      <h2>이번달 내 몸은 몇점?</h2>
+      <button class="close-btn" onclick="closePanel('panel-body-score')">닫기</button>
+    </div>
+    <div class="mini-banner mini-banner-pink">
+      <span class="mini-banner-icon">💗</span>
+      <div>
+        <div class="mini-banner-title">내 몸 점수 확인</div>
+        <div class="mini-banner-sub">6~12월 매달 1회 체중 기록 · 나만 볼 수 있어요 🔒</div>
+      </div>
+    </div>
+    <div class="private-notice">
+      <span class="lock-icon">🔒</span>
+      <span>내 기록은 <strong>나만 볼 수 있어요</strong>. 이 기기에 안전하게 저장돼요!</span>
+    </div>
+    <!-- 월 탭 -->
+    <div class="month-tabs" id="month-tabs">
+      <div class="month-tab active" onclick="selectMonth(6,this)" id="tab-6">6월</div>
+      <div class="month-tab" onclick="selectMonth(7,this)" id="tab-7">7월</div>
+      <div class="month-tab" onclick="selectMonth(8,this)" id="tab-8">8월</div>
+      <div class="month-tab" onclick="selectMonth(9,this)" id="tab-9">9월</div>
+      <div class="month-tab" onclick="selectMonth(10,this)" id="tab-10">10월</div>
+      <div class="month-tab" onclick="selectMonth(11,this)" id="tab-11">11월</div>
+      <div class="month-tab" onclick="selectMonth(12,this)" id="tab-12">12월</div>
+    </div>
+    <!-- 입력 영역 -->
+    <div class="month-input-area">
+      <div class="month-title" id="month-input-title">6월 체중 기록</div>
+      <div class="month-subtitle">키와 몸무게를 입력하고 비만도를 확인해요!</div>
+      <div class="input-row">
+        <div class="input-group">
+          <div class="input-label">키 (cm)</div>
+          <input class="num-input" type="number" id="input-height" placeholder="예) 140" min="80" max="200">
+        </div>
+        <div class="input-group">
+          <div class="input-label">몸무게 (kg)</div>
+          <input class="num-input" type="number" id="input-weight" placeholder="예) 35" min="10" max="150">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcBMI()">📊 저장하고 비만도 확인하기</button>
+      <div class="result-card" id="result-card"></div>
+    </div>
+    <!-- 누적 기록 -->
+    <div class="history-section" id="history-section" style="display:none">
+      <div class="history-title">
+        📅 내 체중 변화 기록
+        <span class="history-private">(나만 볼 수 있어요)</span>
+      </div>
+      <div id="history-list"></div>
+    </div>
+    <div class="divider"></div>
+    <!-- 비만도 설명 -->
+    <div class="ob-section-title">📖 비만도란 무엇일까요?</div>
+    <div class="ob-def">
+      비만도는 키와 몸무게로 내 몸이 건강한지 알아보는 방법이에요.
+      <strong>BMI(체질량지수)</strong>를 사용하는데, 값이 높을수록 체지방이 많다는 뜻이에요.
+      어린이도 같은 공식으로 계산하지만 판정 기준은 어른과 조금 다를 수 있어요!
+    </div>
+    <div class="ob-formula">
+      <div class="ob-formula-title">✏️ BMI 계산 공식</div>
+      <div class="ob-formula-text">
+        BMI = 몸무게(kg) ÷ 키(m) ÷ 키(m)<br>
+        <span class="ob-formula-example">예) 키 140cm, 몸무게 35kg → 35 ÷ 1.4 ÷ 1.4 ≈ 17.9</span>
+      </div>
+    </div>
+    <div class="ob-table-wrap">
+      <div class="ob-table-header">
+        <span>📌</span>
+        <span>대한비만학회 BMI 판정 기준</span>
+      </div>
+      <table class="ob-table">
+        <thead>
+          <tr><th>BMI 범위</th><th>판정</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>18.5 미만</td><td><span class="bmi-dot" style="background:#378ADD"></span><span class="bmi-thin">저체중</span></td></tr>
+          <tr><td>18.5 ~ 22.9</td><td><span class="bmi-dot" style="background:#1D9E75"></span><span class="bmi-normal">정상</span></td></tr>
+          <tr><td>23.0 ~ 24.9</td><td><span class="bmi-dot" style="background:#EF9F27"></span><span class="bmi-overweight">과체중 (비만 전단계)</span></td></tr>
+          <tr><td>25.0 ~ 29.9</td><td><span class="bmi-dot" style="background:#D85A30"></span><span class="bmi-obese1">1단계 비만</span></td></tr>
+          <tr><td>30.0 ~ 34.9</td><td><span class="bmi-dot" style="background:#E24B4A"></span><span class="bmi-obese2">2단계 비만</span></td></tr>
+          <tr><td>35.0 이상</td><td><span class="bmi-dot" style="background:#A32D2D"></span><span class="bmi-obese3">3단계 비만 (고도비만)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ob-note">※ 위 기준은 성인 기준이에요. 어린이·청소년은 성장 단계에 따라 기준이 다를 수 있으니 정확한 판정은 선생님이나 전문가와 함께 확인하세요!</div>
+  </div>
+
+  <!-- 5. 쏙쏙 건강채널 -->
+  <div class="panel" id="panel-tips">
+    <div class="ph">
+      <div class="ph-icon">📺</div>
+      <h2>쏙쏙 건강채널</h2>
+      <button class="close-btn" onclick="closePanel('panel-tips')">닫기</button>
+    </div>
+    <div class="mini-banner mini-banner-teal">
+      <span class="mini-banner-icon">📺</span>
+      <div>
+        <div class="mini-banner-title">쏙쏙 건강채널</div>
+        <div class="mini-banner-sub">선생님이 올려주신 건강 정보 · 계속 업데이트!</div>
+      </div>
+    </div>
+    <a class="ext-btn-big ext-btn-big-teal" href="https://padlet.com/a01067752602/padlet-9ri47j3wo65y4rc7" target="_blank">
+      <span class="ebb-icon">📌</span>
+      <span class="ebb-text">
+        <span class="ebb-main">쏙쏙 건강채널 보러가기</span>
+        <span class="ebb-sub">Padlet 바로가기 →</span>
+      </span>
+    </a>
+  </div>
+
+  <!-- 6. 숏폼 챌린지 -->
+  <div class="panel" id="panel-body">
+    <div class="ph">
+      <div class="ph-icon">🎬</div>
+      <h2>숏폼 챌린지</h2>
+      <button class="close-btn" onclick="closePanel('panel-body')">닫기</button>
+    </div>
+    <div class="mini-banner mini-banner-purple">
+      <span class="mini-banner-icon">🎬</span>
+      <div>
+        <div class="mini-banner-title">숏폼 챌린지</div>
+        <div class="mini-banner-sub">건강 챌린지 영상 보고 나도 도전!</div>
+      </div>
+    </div>
+    <a class="ext-btn-big ext-btn-big-purple" href="https://padlet.com/a01067752602/padlet-a1s7bft7ayd8chrj" target="_blank">
+      <span class="ebb-icon">📌</span>
+      <span class="ebb-text">
+        <span class="ebb-main">숏폼 챌린지 보러가기</span>
+        <span class="ebb-sub">Padlet 바로가기 →</span>
+      </span>
+    </a>
+    <div class="community-notice">
+      <span class="cn-icon">🧹</span>
+      <span>우리들의 깨끗한 공간을 위해, 주제와 상관없는 글이나 영상은 삭제될 수 있습니다.</span>
+    </div>
+  </div>
+  <!-- 7. 명예의 전당 -->
+  <div class="panel" id="panel-hall">
+    <div class="ph">
+      <div class="ph-icon">🏆</div>
+      <h2>명예의 전당</h2>
+      <button class="close-btn" onclick="closePanel('panel-hall')">닫기</button>
+    </div>
+    <div class="hall-banner">
+      <div class="hall-stars">✨ ⭐ 🌟 ⭐ ✨</div>
+      <div class="hall-trophy">🏆</div>
+      <div class="hall-title">명예의 전당</div>
+      <div class="hall-sub">튼튼탐험대 최고의 건강 챔피언들!<br>꾸준히 노력한 모든 탐험대원을 응원해요!</div>
+      <div class="hall-crowns">👑 👑 👑</div>
+    </div>
+    <a class="pbc-btn" href="https://padlet.com/a01067752602/padlet-gsgizq88bgcl9a3r" target="_blank" style="display:inline-block;margin-top:4px">🏆 명예의 전당 보러가기 →</a>
+  </div>
+  <!-- 8. 이달의 퍼즐 완성 -->
+  <div class="panel" id="panel-picture">
+    <div class="ph">
+      <div class="ph-icon">🖼️</div>
+      <h2>이달의 퍼즐 완성</h2>
+      <button class="close-btn" onclick="closePanel('panel-picture')">닫기</button>
+    </div>
+
+    <!-- 진행 현황 -->
+    <div class="picture-progress-bar">
+      <div class="ppb-top">
+        <span class="ppb-label">이번 달 포인트 달성률</span>
+        <span class="ppb-pct" id="pic-pct">0%</span>
+      </div>
+      <div class="ppb-track">
+        <div class="ppb-fill" id="pic-fill"></div>
+      </div>
+      <div class="ppb-meta">
+        <span id="pic-points-label">현재 <strong id="pic-cur">20</strong>P</span>
+        <span>목표 <strong id="pic-goal">200</strong>P · 매월 28일 완성!</span>
+      </div>
+    </div>
+
+    <!-- 액자 + 퍼즐 -->
+    <div class="picture-frame-wrap">
+      <div class="picture-frame">
+        <div class="frame-corner tl">★</div>
+        <div class="frame-corner tr">★</div>
+        <div class="frame-corner bl">★</div>
+        <div class="frame-corner br">★</div>
+        <div class="frame-inner">
+          <img id="pic-img" src="6월.png" alt="이달의 퍼즐" class="pic-image">
+          <div class="pic-overlay" id="pic-overlay">
+            <div class="pic-overlay-text" id="pic-overlay-text">🧩 포인트를 모아<br>퍼즐을 완성해요!</div>
           </div>
         </div>
-        <div class="dash-sec-title">📋 지급 이력</div>
-        <div class="grant-log" id="grant-log" style="max-height:160px;"></div>
-        <button class="dash-print-btn" style="background:#888;margin-top:8px;" onclick="clearGrantLog()">🗑️ 이력 초기화</button>
       </div>
-      <div class="dash-tab-panel" id="tab-memo">
-        <div class="dash-sec-title" style="margin-top:0;">📝 수업 메모</div>
-        <textarea class="dash-memo" id="teacher-memo" placeholder="수업 메모, 학생 관찰 내용 등을 적어보세요."></textarea>
-        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-          <button class="memo-save-btn" onclick="saveMemo()">저장</button>
-          <span class="memo-saved-msg" id="memo-msg"></span>
-        </div>
-        <div class="dash-sec-title" style="margin-top:16px;">📅 오늘의 수업 체크리스트</div>
-        <div id="checklist-wrap" style="font-family:var(--main-font);font-size:13px;display:flex;flex-direction:column;gap:8px;"></div>
-      </div>
-      <div class="dash-tab-panel" id="tab-settings">
-        <div class="dash-sec-title" style="margin-top:0;">🔑 비밀번호 변경</div>
-        <div style="display:flex;gap:8px;">
-          <input class="dash-input" id="new-pw" type="password" placeholder="새 비밀번호" style="flex:1;"/>
-          <button class="dash-grant-btn" onclick="changePw()" style="background:#378ADD;">변경</button>
-        </div>
-        <div id="pw-msg" style="font-size:12px;color:#1D9E75;margin-top:6px;font-family:var(--main-font);min-height:18px;"></div>
-        <div class="dash-sec-title" style="margin-top:16px;">🗑️ 데이터 관리</div>
-        <button class="dash-print-btn" style="background:#E24B4A;" onclick="resetAll()">⚠️ 전체 데이터 초기화</button>
-        <div style="font-size:10px;color:#aaa;margin-top:6px;font-family:var(--main-font);">포인트·BMI·미션 완료 기록이 모두 삭제돼요.</div>
-      </div>
-      <button class="dash-close-btn" onclick="closeDash()">✕ 닫기</button>
+      <div class="picture-month-badge" id="pic-month-badge">6월의 퍼즐</div>
+    </div>
+
+    <!-- 완성 메시지 -->
+    <div class="picture-complete" id="pic-complete" style="display:none">
+      <div class="pc-icon">🎉</div>
+      <div class="pc-title">퍼즐 완성!</div>
+      <div class="pc-desc">이번 달 목표를 달성했어요!<br>건강 탐험가로 한 걸음 더 나아갔어요!</div>
+    </div>
+
+    <!-- 안내 -->
+    <div class="picture-guide">
+      <div class="pg-item"><span class="pg-dot" style="background:#EAF3DE;border:1.5px solid #5DCAA5"></span><span>포인트가 쌓일수록 퍼즐이 선명해져요</span></div>
+      <div class="pg-item"><span class="pg-dot" style="background:#FAEEDA;border:1.5px solid #EF9F27"></span><span>매월 28일 기준으로 완성 여부가 결정돼요</span></div>
+      <div class="pg-item"><span class="pg-dot" style="background:#EEEDFE;border:1.5px solid #AFA9EC"></span><span>다음 달이 되면 새로운 퍼즐로 바뀌어요</span></div>
     </div>
   </div>
 
-  <!-- Space background: planets SVG -->
-  <svg class="space-bg" viewBox="0 0 414 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+</div><!-- /.app -->
 
-    <!-- ── PLANET 1: Saturn-like (top-left) ── -->
-    <g transform="translate(52, 110)">
-      <!-- Ring shadow behind -->
-      <ellipse cx="0" cy="8" rx="68" ry="14" fill="none" stroke="#5A3A8A" stroke-width="7" opacity="0.5"/>
-      <!-- Planet body -->
-      <circle cx="0" cy="0" r="38" fill="#4A2A7A"/>
-      <!-- Planet shading -->
-      <circle cx="0" cy="0" r="38" fill="url(#satGrad)"/>
-      <!-- Planet bands -->
-      <ellipse cx="0" cy="-8" rx="34" ry="6" fill="rgba(120,80,200,0.25)"/>
-      <ellipse cx="0" cy="4" rx="36" ry="5" fill="rgba(80,40,140,0.2)"/>
-      <ellipse cx="0" cy="14" rx="30" ry="4" fill="rgba(120,80,200,0.2)"/>
-      <!-- Highlight -->
-      <ellipse cx="-12" cy="-14" rx="12" ry="8" fill="rgba(180,140,255,0.25)"/>
-      <!-- Ring front -->
-      <ellipse cx="0" cy="8" rx="68" ry="14" fill="none" stroke="#8A5ACA" stroke-width="5" opacity="0.7"/>
-      <ellipse cx="0" cy="8" rx="55" ry="10" fill="none" stroke="#6A3AAA" stroke-width="3" opacity="0.6"/>
-      <!-- Small moon -->
-      <circle cx="62" cy="-18" r="7" fill="#2A1A4A"/>
-      <ellipse cx="60" cy="-20" rx="3" ry="2" fill="rgba(150,110,220,0.3)"/>
-    </g>
-
-    <!-- ── PLANET 2: Earth-like (top-right) ── -->
-    <g transform="translate(370, 70)">
-      <!-- Glow -->
-      <circle cx="0" cy="0" r="36" fill="rgba(55,138,221,0.15)"/>
-      <!-- Planet body -->
-      <circle cx="0" cy="0" r="26" fill="#1A4A8A"/>
-      <!-- Ocean/land -->
-      <circle cx="0" cy="0" r="26" fill="#1D6AA5"/>
-      <!-- Continent blobs -->
-      <ellipse cx="-6" cy="-4" rx="10" ry="8" fill="#2A8A3A" opacity="0.85"/>
-      <ellipse cx="8" cy="4" rx="8" ry="6" fill="#2A8A3A" opacity="0.8"/>
-      <ellipse cx="-4" cy="10" rx="6" ry="4" fill="#2A8A3A" opacity="0.7"/>
-      <!-- Cloud wisps -->
-      <ellipse cx="4" cy="-10" rx="10" ry="3" fill="rgba(255,255,255,0.35)" transform="rotate(-20,4,-10)"/>
-      <ellipse cx="-8" cy="6" rx="8" ry="2.5" fill="rgba(255,255,255,0.25)" transform="rotate(10,-8,6)"/>
-      <!-- Highlight -->
-      <ellipse cx="-8" cy="-10" rx="7" ry="5" fill="rgba(140,200,255,0.25)"/>
-      <!-- Atmosphere glow ring -->
-      <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(100,180,255,0.3)" stroke-width="3"/>
-    </g>
-
-    <!-- ── PLANET 3: Mars-like (right mid) ── -->
-    <g transform="translate(388, 320)">
-      <!-- Glow -->
-      <circle cx="0" cy="0" r="30" fill="rgba(216,90,48,0.12)"/>
-      <!-- Planet body -->
-      <circle cx="0" cy="0" r="20" fill="#8A3010"/>
-      <circle cx="0" cy="0" r="20" fill="#C04820"/>
-      <!-- Surface features -->
-      <ellipse cx="4" cy="-3" rx="8" ry="5" fill="#A03818" opacity="0.6"/>
-      <ellipse cx="-5" cy="5" rx="6" ry="4" fill="#7A2810" opacity="0.5"/>
-      <!-- Polar cap -->
-      <ellipse cx="0" cy="-16" rx="7" ry="3" fill="rgba(255,240,230,0.5)"/>
-      <!-- Highlight -->
-      <ellipse cx="-6" cy="-8" rx="5" ry="4" fill="rgba(240,180,140,0.3)"/>
-    </g>
-
-    <!-- ── PLANET 4: Ice/Neptune-like (bottom-left) ── -->
-    <g transform="translate(30, 480)">
-      <!-- Glow -->
-      <circle cx="0" cy="0" r="32" fill="rgba(55,138,221,0.12)"/>
-      <!-- Planet body -->
-      <circle cx="0" cy="0" r="22" fill="#0A2A5A"/>
-      <circle cx="0" cy="0" r="22" fill="#1A4A9A"/>
-      <!-- Swirl bands -->
-      <ellipse cx="0" cy="-5" rx="19" ry="4" fill="rgba(80,140,220,0.35)" transform="rotate(-15)"/>
-      <ellipse cx="0" cy="4" rx="20" ry="3" fill="rgba(40,100,200,0.3)" transform="rotate(10)"/>
-      <ellipse cx="0" cy="10" rx="16" ry="3" fill="rgba(80,160,240,0.25)"/>
-      <!-- Great storm spot -->
-      <ellipse cx="5" cy="-2" rx="5" ry="3.5" fill="rgba(120,180,255,0.4)"/>
-      <!-- Highlight -->
-      <ellipse cx="-7" cy="-9" rx="6" ry="4" fill="rgba(160,210,255,0.25)"/>
-      <!-- Ring -->
-      <ellipse cx="0" cy="5" rx="36" ry="7" fill="none" stroke="rgba(80,140,220,0.35)" stroke-width="3"/>
-    </g>
-
-    <!-- ── PLANET 5: Small candy planet (center-ish low) ── -->
-    <g transform="translate(340, 600)">
-      <circle cx="0" cy="0" r="14" fill="#3A1A5A"/>
-      <circle cx="0" cy="0" r="14" fill="#7A4ACA"/>
-      <ellipse cx="0" cy="-3" rx="11" ry="3" fill="rgba(180,140,255,0.3)"/>
-      <ellipse cx="-4" cy="-6" rx="4" ry="3" fill="rgba(220,190,255,0.25)"/>
-    </g>
-
-    <!-- ── NEBULA glow patches ── -->
-    <ellipse cx="200" cy="200" rx="160" ry="100" fill="rgba(127,119,221,0.04)"/>
-    <ellipse cx="100" cy="400" rx="120" ry="80" fill="rgba(55,138,221,0.05)"/>
-    <ellipse cx="320" cy="450" rx="100" ry="70" fill="rgba(93,202,165,0.04)"/>
-
-    <defs>
-      <radialGradient id="satGrad" cx="35%" cy="30%" r="65%">
-        <stop offset="0%" stop-color="#7A4ACC" stop-opacity="0.4"/>
-        <stop offset="100%" stop-color="#1A0A30" stop-opacity="0.6"/>
-      </radialGradient>
-    </defs>
-  </svg>
-
-  <!-- Shooting stars -->
-  <div class="shoot sh1"></div>
-  <div class="shoot sh2"></div>
-  <div class="shoot sh3"></div>
-
-  <!-- Main content -->
-  <div class="content">
-
-    <!-- Top badge -->
-    <div class="top-badge">🧭 2026 건강 탐험 시작!</div>
-
-    <!-- Mascot -->
-    <div class="mascot-wrap">
-      <div id="lottie-mascot" style="width:220px;height:220px;"></div>
-      <div class="mascot-star ms1">⭐</div>
-      <div class="mascot-star ms2">✨</div>
-      <div class="mascot-star ms3">🌟</div>
-    </div>
-
-    <!-- Title -->
-    <div class="title-block">
-      <p class="title-sub">튼튼하고 건강한 '나' 만들기 프로젝트</p>
-      <h1 class="title-main"></h1>
-      <div class="title-brand">
-        튼튼탐험대 <em>출발</em>! 🚀
-      </div>
-    </div>
-
-    <!-- Tagline card -->
-    <div class="tagline-card">
-      <p>
-        미션을 성공하고 포인트를 모아 보세요.<br>
-        <strong>도전하는 과정에서 몸도 튼튼, 마음도 튼튼</strong> 💪<br>
-        푸짐한 선물이 기다리고 있어요! 🎁
-      </p>
-    </div>
-
-
-
-    <!-- CTA Button -->
-    <div class="cta-wrap">
-      <button class="cta-btn" id="startBtn" onclick="startAdventure()">
-        탐험 시작하기!
-        <span class="cta-arrow">→</span>
-      </button>
-    </div>
-
-  </div><!-- /.content -->
-</div><!-- /.scene -->
-
-  <!-- NAV 삭제됨 -->
-
-<script>
-  // ── Star field canvas ──
-  (function() {
-    var c = document.getElementById('star-canvas');
-    var ctx = c.getContext('2d');
-    function resize() { c.width = window.innerWidth; c.height = window.innerHeight; drawStars(); }
-    function drawStars() {
-      ctx.clearRect(0, 0, c.width, c.height);
-      var stars = [];
-      for (var i = 0; i < 180; i++) {
-        stars.push({
-          x: Math.random() * c.width,
-          y: Math.random() * c.height,
-          r: Math.random() * 1.6 + 0.2,
-          a: Math.random() * 0.8 + 0.2
-        });
-      }
-      stars.forEach(function(s) {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,' + s.a + ')';
-        ctx.fill();
-
-      });
-    }
-    window.addEventListener('resize', resize);
-    resize();
-  })();
-
-  function startAdventure() {
-    var btn = document.getElementById('startBtn');
-    // Ripple effect
-    var ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    ripple.style.width = ripple.style.height = '60px';
-    ripple.style.left = '50%';
-    ripple.style.top = '50%';
-    ripple.style.marginLeft = '-30px';
-    ripple.style.marginTop = '-30px';
-    btn.appendChild(ripple);
-    setTimeout(function(){ ripple.remove(); }, 600);
-
-    // Page transition → go to levelup intro page
-    document.querySelector('.scene').classList.add('page-out');
-    setTimeout(function(){
-      window.location.href = 'levelup.html';
-    }, 480);
-  }
-
-  // Prevent double-tap zoom on mobile
-  var lastTouch = 0;
-  document.addEventListener('touchend', function(e) {
-    var now = Date.now();
-    if (now - lastTouch < 300) e.preventDefault();
-    lastTouch = now;
-  }, { passive: false });
-
-  // ── Lottie 마스코트 ──
-  (function(){
-    var wrap = document.getElementById('lottie-mascot');
-    var loaded = false;
-    var anim = lottie.loadAnimation({
-      container: wrap,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'Astronaut_and_spaceship_in_space_scene.json'
-    });
-    anim.addEventListener('data_ready', function(){ loaded = true; });
-    anim.addEventListener('data_failed', function(){ showFallback(); });
-    setTimeout(function(){ if(!loaded) showFallback(); }, 3000);
-    function showFallback(){
-      wrap.innerHTML = '<div style="font-size:90px;text-align:center;line-height:220px;animation:float 3s ease-in-out infinite;">🚀</div>';
-    }
-  })();
-
-  // ── 관리자 ──
-  var ADMIN_PW_KEY='tuntun_admin_pw';
-  function getAdminPw(){return localStorage.getItem(ADMIN_PW_KEY)||'1234';}
-  function openAdminLogin(){document.getElementById('admin-modal').classList.add('open');document.getElementById('admin-pw').value='';document.getElementById('admin-err').textContent='';setTimeout(function(){document.getElementById('admin-pw').focus();},100);}
-  function closeAdminLogin(){document.getElementById('admin-modal').classList.remove('open');}
-  function checkAdmin(){var pw=document.getElementById('admin-pw').value;if(pw===getAdminPw()){closeAdminLogin();openDash();}else{document.getElementById('admin-err').textContent='❌ 비밀번호가 틀렸어요';document.getElementById('admin-pw').value='';document.getElementById('admin-pw').focus();}}
-  function changePw(){var v=document.getElementById('new-pw').value.trim();if(!v){document.getElementById('pw-msg').textContent='비밀번호를 입력해 주세요';return;}localStorage.setItem(ADMIN_PW_KEY,v);document.getElementById('pw-msg').textContent='✅ 변경 완료!';document.getElementById('new-pw').value='';}
-  function openDash(){document.getElementById('dash-panel').classList.add('open');var now=new Date();document.getElementById('dash-datetime').textContent=now.getFullYear()+'.'+(now.getMonth()+1)+'.'+now.getDate()+' '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');renderDashStats();renderBmiTable();renderMissionStat();renderLvDist();loadMemo();renderChecklist();}
-  function closeDash(){document.getElementById('dash-panel').classList.remove('open');}
-  function switchTab(id){document.querySelectorAll('.dash-tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.dash-tab').forEach(function(t){t.classList.remove('active');});document.getElementById(id).classList.add('active');event.currentTarget.classList.add('active');}
-  function renderDashStats(){var pts=parseInt(localStorage.getItem('tuntun_pts')||'0');var recs={};try{recs=JSON.parse(localStorage.getItem('tuntun_body_records_v2')||'{}');}catch(e){}var recCount=Object.keys(recs).length;var lv=pts<=200?'1단계':pts<=600?'2단계':pts<=1200?'3단계':'4단계';document.getElementById('ds-total').textContent=pts+'P';document.getElementById('ds-records').textContent=recCount+'건';document.getElementById('ds-level').textContent=lv;}
-  function renderLvDist(){var pts=parseInt(localStorage.getItem('tuntun_pts')||'0');var levels=[{name:'1단계 🌱',max:200,color:'#5DCAA5'},{name:'2단계 🧭',max:600,color:'#378ADD'},{name:'3단계 🏅',max:1200,color:'#EF9F27'},{name:'4단계 🦸',max:99999,color:'#D85A30'}];var curLvIdx=pts<=200?0:pts<=600?1:pts<=1200?2:3;var prev=curLvIdx===0?0:levels[curLvIdx-1].max;var next=levels[curLvIdx].max===99999?prev+500:levels[curLvIdx].max;var pct=curLvIdx===3?100:Math.min(100,Math.round((pts-prev)/(next-prev)*100));var html='';levels.forEach(function(lv,i){var barPct=i<curLvIdx?100:i===curLvIdx?pct:0;html+='<div class="lv-dist-row"><span class="lv-dist-label">'+lv.name+'</span><div class="lv-dist-bar-wrap"><div class="lv-dist-bar" style="width:'+barPct+'%;background:'+lv.color+';"></div></div><span class="lv-dist-count">'+(i===curLvIdx?pct+'%':i<curLvIdx?'✓':'-')+'</span></div>';});document.getElementById('dash-lv-dist').innerHTML=html;}
-  function renderMissionStat(){var done=0;try{var md=JSON.parse(localStorage.getItem('tuntun_missions')||'{}');done=Object.keys(md).length;}catch(e){}document.getElementById('dash-mission-stat').innerHTML='<div style="display:flex;gap:8px;align-items:center;"><span style="font-size:22px;font-weight:700;color:#1D9E75;">'+done+'</span><span>개 미션 완료</span></div>';}
-  function getBmiLabel(bmi){if(bmi<18.5)return{label:'저체중',color:'#378ADD'};if(bmi<23)return{label:'정상',color:'#1D9E75'};if(bmi<25)return{label:'과체중',color:'#EF9F27'};if(bmi<30)return{label:'1단계비만',color:'#D85A30'};if(bmi<35)return{label:'2단계비만',color:'#E24B4A'};return{label:'3단계비만',color:'#A32D2D'};}
-  function renderBmiTable(){var recs={};try{recs=JSON.parse(localStorage.getItem('tuntun_body_records_v2')||'{}');}catch(e){}var keys=Object.keys(recs).map(Number).sort(function(a,b){return a-b;});var tbody=document.getElementById('dash-bmi-tbody');var empty=document.getElementById('dash-bmi-empty');if(keys.length===0){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';tbody.innerHTML=keys.map(function(m){var r=recs[m],st=getBmiLabel(r.bmi);return'<tr><td>'+m+'월</td><td>'+r.h+'cm</td><td>'+r.w+'kg</td><td style="font-weight:600">'+r.bmi.toFixed(1)+'</td><td style="color:'+st.color+';font-weight:600">'+st.label+'</td></tr>';}).join('');}
-  function clearBmi(){if(!confirm('BMI 기록을 모두 삭제할까요?'))return;localStorage.removeItem('tuntun_body_records_v2');renderBmiTable();renderDashStats();alert('✅ BMI 기록이 삭제됐어요.');}
-  function grantPoint(){var name=document.getElementById('grant-name').value.trim();var reason=document.getElementById('grant-reason').value.trim();var pt=parseInt(document.getElementById('grant-pt').value)||0;if(!name){alert('학생 이름을 입력해 주세요');return;}if(pt<1){alert('포인트를 입력해 주세요');return;}var now=new Date();var time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');var item=document.createElement('div');item.className='grant-log-item';item.innerHTML='<span><strong>'+name+'</strong> · '+(reason||'수동지급')+'</span><span style="color:#1D9E75;font-weight:600">+'+pt+'P · '+time+'</span>';var log=document.getElementById('grant-log');log.insertBefore(item,log.firstChild);var history=[];try{history=JSON.parse(localStorage.getItem('tuntun_grant_log')||'[]');}catch(e){}history.unshift({name:name,reason:reason||'수동지급',pt:pt,time:time});if(history.length>50)history=history.slice(0,50);localStorage.setItem('tuntun_grant_log',JSON.stringify(history));document.getElementById('grant-name').value='';document.getElementById('grant-pt').value='5';alert('✅ '+name+' 에게 '+pt+'P 지급 기록 완료!');}
-  function clearGrantLog(){if(!confirm('지급 이력을 초기화할까요?'))return;localStorage.removeItem('tuntun_grant_log');document.getElementById('grant-log').innerHTML='';}
-  function loadMemo(){var memo=localStorage.getItem('tuntun_teacher_memo')||'';document.getElementById('teacher-memo').value=memo;}
-  function saveMemo(){var v=document.getElementById('teacher-memo').value;localStorage.setItem('tuntun_teacher_memo',v);var msg=document.getElementById('memo-msg');msg.textContent='✅ 저장됐어요!';setTimeout(function(){msg.textContent='';},2000);}
-  var CHECKLIST_ITEMS=['출석 확인','포인트 현황 체크','BMI 기록 안내','미션 안내','수업 마무리 정리'];
-  function renderChecklist(){var saved={};try{saved=JSON.parse(localStorage.getItem('tuntun_checklist')||'{}');}catch(e){}var html='';CHECKLIST_ITEMS.forEach(function(item,i){var checked=saved[i]||false;html+='<label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" '+(checked?'checked':'')+' onchange="toggleCheck('+i+',this.checked)" style="width:16px;height:16px;cursor:pointer;accent-color:#1D9E75;"><span style="color:'+(checked?'#aaa':'#333')+';text-decoration:'+(checked?'line-through':'none')+'">'+item+'</span></label>';});document.getElementById('checklist-wrap').innerHTML=html;}
-  function toggleCheck(idx,val){var saved={};try{saved=JSON.parse(localStorage.getItem('tuntun_checklist')||'{}');}catch(e){}saved[idx]=val;localStorage.setItem('tuntun_checklist',JSON.stringify(saved));renderChecklist();}
-  function printDash(){var pts=localStorage.getItem('tuntun_pts')||'0';var lv=parseInt(pts)<=200?'1단계':parseInt(pts)<=600?'2단계':parseInt(pts)<=1200?'3단계':'4단계';var now=new Date();var dateStr=now.getFullYear()+'년 '+(now.getMonth()+1)+'월 '+now.getDate()+'일';var win=window.open('','_blank');win.document.write('<html><head><title>튼튼탐험대 현황 보고서</title><style>body{font-family:sans-serif;padding:24px;color:#333;}h2{color:#1D9E75;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ddd;padding:8px;text-align:center;}th{background:#f0f0f0;}</style></head><body>');win.document.write('<h2>📊 튼튼탐험대 교사 현황 보고서</h2><p>출력일: '+dateStr+'</p><hr>');win.document.write('<p><strong>총 포인트:</strong> '+pts+'P &nbsp; <strong>현재 레벨:</strong> '+lv+'</p>');win.document.write('<h3>⚖️ BMI 기록</h3>');var recs={};try{recs=JSON.parse(localStorage.getItem('tuntun_body_records_v2')||'{}');}catch(e){}var keys=Object.keys(recs).map(Number).sort(function(a,b){return a-b;});if(keys.length){win.document.write('<table><tr><th>월</th><th>키</th><th>몸무게</th><th>BMI</th><th>판정</th></tr>');keys.forEach(function(m){var r=recs[m],st=getBmiLabel(r.bmi);win.document.write('<tr><td>'+m+'월</td><td>'+r.h+'cm</td><td>'+r.w+'kg</td><td>'+r.bmi.toFixed(1)+'</td><td style="color:'+st.color+'">'+st.label+'</td></tr>');});win.document.write('</table>');}else{win.document.write('<p>기록 없음</p>');}var memo=localStorage.getItem('tuntun_teacher_memo')||'';if(memo){win.document.write('<h3>📝 교사 메모</h3><pre style="background:#f9f9f9;padding:12px;border-radius:8px;">'+memo+'</pre>');}win.document.write('</body></html>');win.document.close();win.print();}
-  function resetAll(){if(!confirm('정말로 모든 데이터를 초기화할까요?'))return;['tuntun_pts','tuntun_body_records_v2','tuntun_missions','tuntun_grant_log','tuntun_checklist'].forEach(function(k){localStorage.removeItem(k);});alert('✅ 초기화 완료! 페이지를 새로고침해요.');location.reload();}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
