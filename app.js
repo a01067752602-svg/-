@@ -52,9 +52,7 @@ function updateUI() {
   document.getElementById('prog-fill').style.width   = pct + '%';
   document.getElementById('prog-max').textContent    = (i < 3 ? next : '최고') + '포인트';
 
-  for (var j = 0; j < 4; j++) {
-    document.getElementById('lv' + j).className = 'lv-card' + (j === i ? ' active' : '');
-  }
+
 }
 
 /* ── 토스트 ── */
