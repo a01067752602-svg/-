@@ -352,10 +352,12 @@
       </div>
 
       <!-- 포인트 강조 -->
-      <div style="margin-top:18px;text-align:center;">
-        <div style="font-family:var(--main-font);font-size:13px;color:rgba(200,220,255,0.7);margin-bottom:6px;">내 탐험 포인트</div>
+      <div style="margin-top:18px;text-align:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:18px 24px;">
+        <div style="font-family:var(--main-font);font-size:12px;color:rgba(200,220,255,0.55);margin-bottom:2px;letter-spacing:1px;">나의 누적 총 포인트</div>
         <div id="big-pts" style="font-family:var(--title-font);font-size:clamp(52px,14vw,72px);color:#FFD700;line-height:1;animation:ptsBounce 1.5s ease-in-out infinite;text-shadow:0 0 30px rgba(255,200,0,0.6);">0</div>
         <div style="font-family:var(--main-font);font-size:18px;color:#FFD86E;margin-top:2px;">포인트 ⭐</div>
+        <div style="font-family:var(--main-font);font-size:11px;color:rgba(180,200,255,0.45);margin-top:8px;">미션 + 퀴즈 + 숏폼 + 교사 보너스 합계</div>
+        <div id="pts-student-id" style="font-family:var(--main-font);font-size:11px;color:rgba(180,200,255,0.4);margin-top:4px;"></div>
       </div>
 
     </div>
@@ -403,6 +405,11 @@ function initPuzzle(){
   // 큰 포인트 숫자 업데이트
   var bigPts = document.getElementById('big-pts');
   if(bigPts) bigPts.textContent = pts;
+  // 학번 표시
+  var sid = localStorage.getItem('tuntun_student_id')||'';
+  var sidEl = document.getElementById('pts-student-id');
+  if(sidEl && sid && sid!=='GUEST') sidEl.textContent = '👨‍🚀 학번: '+sid;
+  else if(sidEl && sid==='GUEST') sidEl.textContent = '👩‍🏫 교사/학부모 모드';
 
   /* 퍼즐 그리드 16조각 */
   var grid=document.getElementById('puzzle-grid');
