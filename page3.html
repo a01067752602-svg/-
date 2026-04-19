@@ -62,7 +62,6 @@
       display: flex; align-items: center; gap: 12px;
       backdrop-filter: blur(6px);
       animation: fadeDown 0.5s ease both;
-      padding-right: 110px; /* 우상단 관리자 버튼 공간 확보 */
     }
     @keyframes fadeDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
     .level-box-chars { display:flex; gap:6px; align-items:flex-end; }
@@ -263,25 +262,27 @@
     .page-out{animation:pageOut 0.4s ease forwards!important;}
     @keyframes pageOut{to{opacity:0;transform:translateY(-14px);}}
 
-    /* ── 관리자 버튼 ── */
+    /* ── 관리자 버튼 — 레벨박스 내 아이콘 ── */
     .admin-float-btn{
-      position:fixed;top:12px;right:12px;z-index:50;
-      background:linear-gradient(135deg,rgba(30,30,60,0.92),rgba(55,45,90,0.92));
-      backdrop-filter:blur(12px);
-      color:rgba(210,220,255,0.95);
-      border:1px solid rgba(160,140,255,0.4);
-      border-radius:20px;padding:7px 15px;
-      font-family:var(--main-font);font-size:12px;
-      cursor:pointer;transition:all 0.18s;
-      box-shadow:0 0 14px rgba(127,119,221,0.3),0 2px 8px rgba(0,0,0,0.4);
-      display:flex;align-items:center;gap:5px;letter-spacing:0.3px;
+      flex-shrink:0;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(160,140,255,0.3);
+      border-radius:10px;
+      width:34px; height:34px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:16px;
+      cursor:pointer;
+      transition:all 0.18s;
+      color:rgba(210,220,255,0.8);
+      /* fixed 해제 — 레벨박스 내 일반 흐름 */
+      position:static;
     }
     .admin-float-btn:hover{
-      background:linear-gradient(135deg,rgba(90,70,160,0.95),rgba(60,50,120,0.95));
-      border-color:rgba(200,185,255,0.55);
-      box-shadow:0 0 22px rgba(127,119,221,0.55),0 2px 10px rgba(0,0,0,0.4);
+      background:rgba(127,119,221,0.3);
+      border-color:rgba(200,185,255,0.5);
+      box-shadow:0 0 12px rgba(127,119,221,0.4);
     }
-    .admin-float-btn:active{transform:scale(0.94);}
+    .admin-float-btn:active{transform:scale(0.9);}
 
     /* ── 비밀번호 모달 ── */
     .admin-modal-wrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;}
@@ -403,10 +404,7 @@
   <div class="shoot sh1"></div>
   <div class="shoot sh2"></div>
 
-  <!-- 관리자 버튼 -->
-  <button class="admin-float-btn" onclick="openAdminLogin()">🔐 관리자</button>
-
-  <!-- 비밀번호 모달 -->
+  <!-- 관리자 버튼 + 비밀번호 모달 -->
   <div class="admin-modal-wrap" id="admin-modal">
     <div class="admin-modal-box">
       <div class="admin-modal-icon">🔐</div>
@@ -576,6 +574,7 @@
         <div class="level-box-stage" id="level-stage">1단계 · 0~200P</div>
         <div class="level-box-badge">진행 중! ⭐</div>
       </div>
+      <button class="admin-float-btn" onclick="openAdminLogin()" title="교사 대시보드">🔐</button>
     </div>
 
     <!-- ② 행성 구역 -->
