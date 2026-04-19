@@ -7,7 +7,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* 교보손글씨체 */
+    @font-face {
+      font-family: 'KyoboHand';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
     :root {
+      --title-font: 'KyoboHand', sans-serif;
+      --main-font:  'Jua', sans-serif;
       --green:   #1D9E75;
       --green2:  #5DCAA5;
       --green3:  #E1F5EE;
@@ -28,7 +37,7 @@
 
     html, body {
       height: 100%;
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: var(--main-font);
       background: #0B0E2A;
       overflow-x: hidden;
     }
@@ -97,9 +106,7 @@
       background: rgba(29,158,117,0.25);
       color: #ffffff;
       border: 1px solid rgba(93,202,165,0.4);
-      font-family: 'Jua', sans-serif;
-      font-size: 13px;
-      padding: 6px 18px;
+      font-family: var(--main-font);
       border-radius: 100px;
       letter-spacing: 0.5px;
       animation: fadeDown 0.6s ease both;
@@ -154,7 +161,7 @@
     }
 
     .title-sub {
-      font-family: 'Jua', sans-serif;
+      font-family: var(--title-font);
       font-size: 15px;
       color: rgba(200,216,255,0.85);
       font-weight: 700;
@@ -164,7 +171,7 @@
     }
 
     .title-main {
-      font-family: 'Jua', sans-serif;
+      font-family: var(--title-font);
       font-size: clamp(26px, 7vw, 32px);
       line-height: 1.25;
       color: #FFFFFF;
@@ -186,7 +193,7 @@
     }
 
     .title-brand {
-      font-family: 'Jua', sans-serif;
+      font-family: var(--title-font);
       font-size: clamp(30px, 8.5vw, 38px);
       color: #fff;
       line-height: 1.1;
@@ -248,10 +255,10 @@
       transition: transform 0.2s;
     }
     .pill:hover { transform: scale(1.05); }
-    .pill-1 { background: var(--green3); color: #0F6E56; border-color: rgba(93,202,165,0.4); }
-    .pill-2 { background: #E8F3FC; color: #185FA5; border-color: rgba(55,138,221,0.3); }
-    .pill-3 { background: #FAEEDA; color: #854F0B; border-color: rgba(239,159,39,0.3); }
-    .pill-4 { background: #FAECE7; color: #993C1D; border-color: rgba(216,90,48,0.3); }
+    .pill-1 { background: rgba(29,158,117,0.25); color: #7EECC8; border-color: rgba(93,202,165,0.4); }
+    .pill-2 { background: rgba(55,138,221,0.25); color: #9DCFFF; border-color: rgba(55,138,221,0.4); }
+    .pill-3 { background: rgba(239,159,39,0.25); color: #FFD580; border-color: rgba(239,159,39,0.4); }
+    .pill-4 { background: rgba(216,90,48,0.25); color: #FFB08A; border-color: rgba(216,90,48,0.4); }
 
     /* ── GIFT BANNER ── */
     .gift-banner {
@@ -528,11 +535,11 @@
   <div class="content">
 
     <!-- Top badge -->
-    <div class="top-badge">🧭 2026 건강 탐험 시작!</div>
+    <div class="top-badge">🚀 2026 건강 탐험 시작!</div>
 
     <!-- Mascot -->
     <div class="mascot-wrap">
-      <div class="mascot-circle">🧭</div>
+      <div class="mascot-circle">🚀</div>
       <div class="mascot-star ms1">⭐</div>
       <div class="mascot-star ms2">✨</div>
       <div class="mascot-star ms3">🌟</div>
@@ -551,21 +558,10 @@
     <div class="tagline-card">
       <p>
         미션을 완료하고, 포인트를 모아서<br>
-        <strong>우주를 누비는 무적의 호랑이</strong>가 되어봐요!<br>
-        매일 조금씩, 꾸준히 도전하면<br>
+        <strong>레벨을 올려봐요!</strong><br>
+        매일 꾸준히 도전하면<br>
         몸도 마음도 튼튼해져요 💪
       </p>
-    </div>
-
-
-
-    <!-- Gift banner -->
-    <div class="gift-banner">
-      <div class="gift-icon">🎁</div>
-      <div class="gift-text">
-        <strong>최고 레벨 달성 시 깜짝 선물!</strong>
-        슈퍼히어로가 되면 어떤 선물이 기다릴까요? 도전해봐요!
-      </div>
     </div>
 
     <!-- CTA Button -->
