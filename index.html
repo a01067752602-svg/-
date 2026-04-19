@@ -3,162 +3,633 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>튼튼탐험대 🚀</title>
+  <title>튼튼탐험대 출발!</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* 교보손글씨체 */
     @font-face {
       font-family: 'KyoboHand';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
-      font-weight: normal; font-style: normal;
+      font-weight: normal;
+      font-style: normal;
     }
-    :root { --title-font:'KyoboHand',sans-serif; --main-font:'Jua',sans-serif; }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-    html, body { width:100%; height:100%; font-family:var(--main-font); background:#04061A; overflow:hidden; }
-
-    #star-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
-
-    .shoot { position:fixed; width:100px; height:1.5px; background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.85)); border-radius:2px; left:-110px; z-index:1; pointer-events:none; }
-    .sh1{top:8%;  animation:sh 6s linear 1s infinite;}
-    .sh2{top:20%; animation:sh 9s linear 5s infinite;}
-    .sh3{top:5%;  animation:sh 7s linear 10s infinite;}
-    @keyframes sh { from{transform:translateX(0) rotate(18deg);opacity:1;} to{transform:translateX(120vw) rotate(18deg);opacity:0;} }
-
-    .fp { position:fixed; border-radius:50%; animation:floatP ease-in-out infinite; z-index:1; pointer-events:none; }
-    .fp1{width:22px;height:22px;background:radial-gradient(circle at 35% 30%,#9A6AEA,#3A1A6A);top:8%; right:6%; animation-duration:5s;}
-    .fp2{width:14px;height:14px;background:radial-gradient(circle at 35% 30%,#5ABAEE,#0A3A6A);top:30%;left:5%; animation-duration:7s;animation-delay:1.5s;}
-    .fp3{width:18px;height:18px;background:radial-gradient(circle at 35% 30%,#EA8A5A,#6A2A1A);top:60%;right:4%; animation-duration:6s;animation-delay:3s;}
-    .fp4{width:10px;height:10px;background:radial-gradient(circle at 35% 30%,#5AEA9A,#0A4A2A);top:80%;left:8%; animation-duration:8s;animation-delay:2s;}
-    @keyframes floatP { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-14px) scale(1.08);} }
-
-    .page {
-      position:relative; z-index:10;
-      width:100%; height:100dvh;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      padding:32px 24px;
+    :root {
+      --title-font: 'KyoboHand', sans-serif;
+      --main-font:  'Jua', sans-serif;
+      --green:   #1D9E75;
+      --green2:  #5DCAA5;
+      --green3:  #E1F5EE;
+      --amber:   #EF9F27;
+      --amber2:  #FAEEDA;
+      --blue:    #378ADD;
+      --blue2:   #E6F1FB;
+      --purple:  #7F77DD;
+      --coral:   #D85A30;
+      --bg:      #0B0E2A;
+      --white:   #FFFFFF;
+      --ink:     #FFFFFF;
+      --ink2:    #C8D8FF;
+      --ink3:    #8899CC;
     }
 
-    .rocket-wrap {
-      font-size:72px;
-      animation:rocketBounce 2.8s ease-in-out infinite;
-      filter:drop-shadow(0 0 20px rgba(120,180,255,0.6));
-      margin-bottom:24px;
-      line-height:1;
-    }
-    @keyframes rocketBounce {
-      0%,100%{ transform:translateY(0) rotate(-5deg); }
-      50%    { transform:translateY(-16px) rotate(5deg); }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--main-font);
+      background: #0B0E2A;
+      overflow-x: hidden;
     }
 
-    .title {
-      font-family:var(--title-font);
-      font-size:clamp(30px,8vw,42px);
-      color:#fff;
-      text-align:center;
-      line-height:1.25;
-      margin-bottom:10px;
-      animation:glowPulse 3s ease-in-out infinite;
+    /* ── SPACE SCENE ── */
+    .scene {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(170deg, #04061A 0%, #0B0E2A 40%, #0E1535 70%, #0A1628 100%);
     }
-    @keyframes glowPulse {
-      0%,100%{ text-shadow:0 0 24px rgba(200,220,255,0.7),0 0 48px rgba(127,119,221,0.4); }
-      50%    { text-shadow:0 0 40px rgba(255,255,255,0.95),0 0 80px rgba(127,119,221,0.7); }
+
+    /* Star field canvas */
+    #star-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
+
+    /* Space planets SVG layer */
+    .space-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Shooting stars */
+    .shoot {
+      position: absolute;
+      width: 120px; height: 2px;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
+      border-radius: 2px;
+      z-index: 2;
+      top: 0; left: -130px;
+    }
+    .sh1 { top: 10%; animation: shoot1 5s linear 1.5s infinite; }
+    .sh2 { top: 25%; animation: shoot2 7.5s linear 5s infinite; }
+    .sh3 { top: 6%;  animation: shoot3 6s linear 9s infinite; }
+    @keyframes shoot1 { from{transform:translateX(0) rotate(18deg);opacity:1;} to{transform:translateX(calc(100vw+260px)) rotate(18deg);opacity:0;} }
+    @keyframes shoot2 { from{transform:translateX(0) rotate(14deg);opacity:1;} to{transform:translateX(calc(100vw+260px)) rotate(14deg);opacity:0;} }
+    @keyframes shoot3 { from{transform:translateX(0) rotate(22deg);opacity:1;} to{transform:translateX(calc(100vw+260px)) rotate(22deg);opacity:0;} }
+
+    /* ── CONTENT WRAPPER ── */
+    .content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 420px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* ── TOP BADGE ── */
+    .top-badge {
+      margin-top: 28px;
+      background: rgba(29,158,117,0.25);
+      color: #ffffff;
+      border: 1px solid rgba(93,202,165,0.4);
+      font-family: var(--main-font);
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    /* ── MASCOT AREA ── */
+    .mascot-wrap {
+      margin-top: 10px;
+      width: 220px;
+      height: 220px;
+      position: relative;
+      animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+    }
+
+    .mascot-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1A2050 0%, #2A3080 100%);
+      border: 2px solid rgba(127,119,221,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 90px;
+      box-shadow: 0 8px 40px rgba(127,119,221,0.35), 0 0 60px rgba(55,138,221,0.15);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .mascot-star {
+      position: absolute;
+      font-size: 22px;
+      animation: spin 4s linear infinite;
+    }
+    .ms1 { top: 10px; right: 10px; animation-delay: 0s; }
+    .ms2 { bottom: 20px; left: 5px; animation-delay: 1.5s; font-size: 16px; }
+    .ms3 { top: 50%; right: -5px; animation-delay: 0.8s; font-size: 14px; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0px); }
+      50%      { transform: translateY(-10px); }
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* ── TITLE ── */
+    .title-block {
+      text-align: center;
+      animation: fadeUp 0.7s ease 0.4s both;
+    }
+
     .title-sub {
-      font-size:15px;
-      color:rgba(210,225,255,0.8);
-      text-align:center;
-      margin-bottom:44px;
-      line-height:1.7;
+      font-family: var(--title-font);
+      font-size: 15px;
+      color: rgba(200,216,255,0.85);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      
     }
 
-    .start-btn {
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      width:100%; max-width:320px;
-      padding:18px 28px;
-      background:linear-gradient(135deg,#7F77DD 0%,#5DCAA5 100%);
-      color:#fff;
-      font-family:var(--title-font);
-      font-size:22px;
-      border:none; border-radius:20px;
-      cursor:pointer;
-      box-shadow:0 0 0 1px rgba(255,255,255,0.15),0 8px 32px rgba(127,119,221,0.5);
-      animation:btnPulse 2.5s ease-in-out infinite;
-      transition:transform 0.15s;
+    .title-main {
+      font-family: var(--title-font);
+      font-size: clamp(26px, 7vw, 32px);
+      line-height: 1.25;
+      color: #FFFFFF;
+      margin-bottom: 6px;
     }
-    .start-btn:hover  { transform:scale(1.04); }
-    .start-btn:active { transform:scale(0.97); }
-    @keyframes btnPulse {
-      0%,100%{ box-shadow:0 0 0 1px rgba(255,255,255,0.15),0 8px 32px rgba(127,119,221,0.4); }
-      50%    { box-shadow:0 0 0 1px rgba(255,255,255,0.25),0 8px 40px rgba(93,202,165,0.55),0 0 0 8px rgba(127,119,221,0.12); }
+    .title-main .highlight {
+      color: #ffffff;
+      position: relative;
+      display: inline-block;
+    }
+    .title-main .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; left: 0; right: 0;
+      height: 6px;
+      background: rgba(29,158,117,0.2);
+      border-radius: 3px;
+      z-index: -1;
     }
 
-    .bottom-hint {
-      position:fixed; bottom:28px;
-      font-size:12px;
-      color:rgba(180,200,255,0.4);
-      text-align:center;
-      animation:fadeIn 1s ease 1.5s both;
+    .title-brand {
+      font-family: var(--title-font);
+      font-size: clamp(30px, 8.5vw, 38px);
+      color: #fff;
+      line-height: 1.1;
+      
+      
     }
-    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+    @keyframes shimmerText {
+      0%,100% {  }
+      50%      { text-shadow: 0 0 30px rgba(127,232,192,1),   0 0 60px rgba(93,202,165,0.7), 0 0 80px rgba(55,138,221,0.3); }
+    }
+    .title-brand em {
+      font-style: normal;
+      color: #ffffff;
+      
+    }
 
-    body.page-out { animation:pageOut 0.4s ease forwards; }
-    @keyframes pageOut { to{ opacity:0; transform:scale(0.96); } }
+    /* ── TAGLINE CARD ── */
+    .tagline-card {
+      margin-top: 20px;
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 18px 22px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      border: 1px solid rgba(127,119,221,0.25);
+      animation: fadeUp 0.7s ease 0.55s both;
+      backdrop-filter: blur(6px);
+    }
+
+    .tagline-card p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.7;
+      text-align: center;
+    }
+    .tagline-card p strong {
+      color: #ffffff;
+    }
+
+    /* ── LEVEL PREVIEW PILLS ── */
+    .level-pills {
+      margin-top: 20px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.7s ease 0.7s both;
+    }
+
+    .pill {
+      padding: 7px 14px;
+      border-radius: 100px;
+      font-family: 'Jua', sans-serif;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1.5px solid transparent;
+      transition: transform 0.2s;
+    }
+    .pill:hover { transform: scale(1.05); }
+    .pill-1 { background: rgba(29,158,117,0.25); color: #7EECC8; border-color: rgba(93,202,165,0.4); }
+    .pill-2 { background: rgba(55,138,221,0.25); color: #9DCFFF; border-color: rgba(55,138,221,0.4); }
+    .pill-3 { background: rgba(239,159,39,0.25); color: #FFD580; border-color: rgba(239,159,39,0.4); }
+    .pill-4 { background: rgba(216,90,48,0.25); color: #FFB08A; border-color: rgba(216,90,48,0.4); }
+
+    /* ── GIFT BANNER ── */
+    .gift-banner {
+      margin-top: 18px;
+      width: 100%;
+      background: rgba(239,159,39,0.1);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px dashed rgba(239,159,39,0.5);
+      animation: fadeUp 0.7s ease 0.85s both;
+    }
+
+    .gift-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+      animation: wiggle 2s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-5deg); }
+      50%      { transform: rotate(5deg); }
+    }
+
+    .gift-text {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+    .gift-text strong {
+      display: block;
+      font-size: 15px;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    /* ── CTA BUTTON ── */
+    .cta-wrap {
+      margin-top: 24px;
+      margin-bottom: 40px;
+      width: 100%;
+      animation: fadeUp 0.7s ease 1s both;
+    }
+
+    .cta-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-family: 'Jua', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(29,158,117,0.4), 0 2px 8px rgba(29,158,117,0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shimmer 2.5s ease infinite;
+    }
+
+    @keyframes shimmer {
+      from { left: -100%; }
+      to   { left: 200%; }
+    }
+
+    .cta-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 3px 12px rgba(29,158,117,0.3);
+    }
+
+    .cta-arrow {
+      font-size: 24px;
+      animation: arrowBounce 1s ease-in-out infinite;
+    }
+
+    @keyframes arrowBounce {
+      0%,100% { transform: translateX(0); }
+      50%      { transform: translateX(6px); }
+    }
+
+    /* ── BOTTOM DECORATION ── */
+    .bottom-deco {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* ── TWINKLING STAR DOTS ── */
+    .star-deco {
+      position: absolute;
+      font-size: 18px;
+      opacity: 0.6;
+      animation: twinkle 2.5s ease-in-out infinite;
+      z-index: 2;
+      color: #fff;
+    }
+    .sd1 { top: 22%; left: 8%;  animation-delay: 0.3s; font-size: 12px; }
+    .sd2 { top: 30%; right: 10%; animation-delay: 1.1s; font-size: 16px; }
+    .sd3 { top: 18%; right: 20%; animation-delay: 0.7s; font-size: 10px; }
+    .sd4 { top: 44%; left: 5%;   animation-delay: 1.6s; font-size: 14px; }
+
+    @keyframes twinkle {
+      0%,100% { opacity: 0.3; transform: scale(1); }
+      50%      { opacity: 0.8; transform: scale(1.3); }
+    }
+
+    /* ── SCROLL REVEAL ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounceIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── RIPPLE ON CLICK ── */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      transform: scale(0);
+      animation: rippleAnim 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* ── PAGE TRANSITION ── */
+    .page-out {
+      animation: pageOut 0.5s ease forwards !important;
+    }
+    @keyframes pageOut {
+      to { opacity: 0; transform: scale(1.03); }
+    }
   </style>
 </head>
 <body>
+<div class="scene">
 
-<canvas id="star-canvas"></canvas>
-<div class="shoot sh1"></div>
-<div class="shoot sh2"></div>
-<div class="shoot sh3"></div>
-<div class="fp fp1"></div>
-<div class="fp fp2"></div>
-<div class="fp fp3"></div>
-<div class="fp fp4"></div>
+  <!-- Star canvas -->
+  <canvas id="star-canvas"></canvas>
 
-<div class="page">
-  <div class="rocket-wrap">🚀</div>
-  <div class="title">튼튼탐험대<br>우주 출발!</div>
-  <div class="title-sub">
-    튼튼하고 건강한 '나' 만들기 프로젝트<br>
-    🌙 우주를 향해 도전해봐요!
-  </div>
-  <button class="start-btn" onclick="goStart()">
-    👨‍🚀 탐험 시작하기 →
-  </button>
-</div>
+  <!-- Space background: planets SVG -->
+  <svg class="space-bg" viewBox="0 0 414 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
 
-<div class="bottom-hint">튼튼탐험대 · 우주인 에디션 🛸</div>
+    <!-- ── PLANET 1: Saturn-like (top-left) ── -->
+    <g transform="translate(52, 110)">
+      <!-- Ring shadow behind -->
+      <ellipse cx="0" cy="8" rx="68" ry="14" fill="none" stroke="#5A3A8A" stroke-width="7" opacity="0.5"/>
+      <!-- Planet body -->
+      <circle cx="0" cy="0" r="38" fill="#4A2A7A"/>
+      <!-- Planet shading -->
+      <circle cx="0" cy="0" r="38" fill="url(#satGrad)"/>
+      <!-- Planet bands -->
+      <ellipse cx="0" cy="-8" rx="34" ry="6" fill="rgba(120,80,200,0.25)"/>
+      <ellipse cx="0" cy="4" rx="36" ry="5" fill="rgba(80,40,140,0.2)"/>
+      <ellipse cx="0" cy="14" rx="30" ry="4" fill="rgba(120,80,200,0.2)"/>
+      <!-- Highlight -->
+      <ellipse cx="-12" cy="-14" rx="12" ry="8" fill="rgba(180,140,255,0.25)"/>
+      <!-- Ring front -->
+      <ellipse cx="0" cy="8" rx="68" ry="14" fill="none" stroke="#8A5ACA" stroke-width="5" opacity="0.7"/>
+      <ellipse cx="0" cy="8" rx="55" ry="10" fill="none" stroke="#6A3AAA" stroke-width="3" opacity="0.6"/>
+      <!-- Small moon -->
+      <circle cx="62" cy="-18" r="7" fill="#2A1A4A"/>
+      <ellipse cx="60" cy="-20" rx="3" ry="2" fill="rgba(150,110,220,0.3)"/>
+    </g>
+
+    <!-- ── PLANET 2: Earth-like (top-right) ── -->
+    <g transform="translate(370, 70)">
+      <!-- Glow -->
+      <circle cx="0" cy="0" r="36" fill="rgba(55,138,221,0.15)"/>
+      <!-- Planet body -->
+      <circle cx="0" cy="0" r="26" fill="#1A4A8A"/>
+      <!-- Ocean/land -->
+      <circle cx="0" cy="0" r="26" fill="#1D6AA5"/>
+      <!-- Continent blobs -->
+      <ellipse cx="-6" cy="-4" rx="10" ry="8" fill="#2A8A3A" opacity="0.85"/>
+      <ellipse cx="8" cy="4" rx="8" ry="6" fill="#2A8A3A" opacity="0.8"/>
+      <ellipse cx="-4" cy="10" rx="6" ry="4" fill="#2A8A3A" opacity="0.7"/>
+      <!-- Cloud wisps -->
+      <ellipse cx="4" cy="-10" rx="10" ry="3" fill="rgba(255,255,255,0.35)" transform="rotate(-20,4,-10)"/>
+      <ellipse cx="-8" cy="6" rx="8" ry="2.5" fill="rgba(255,255,255,0.25)" transform="rotate(10,-8,6)"/>
+      <!-- Highlight -->
+      <ellipse cx="-8" cy="-10" rx="7" ry="5" fill="rgba(140,200,255,0.25)"/>
+      <!-- Atmosphere glow ring -->
+      <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(100,180,255,0.3)" stroke-width="3"/>
+    </g>
+
+    <!-- ── PLANET 3: Mars-like (right mid) ── -->
+    <g transform="translate(388, 320)">
+      <!-- Glow -->
+      <circle cx="0" cy="0" r="30" fill="rgba(216,90,48,0.12)"/>
+      <!-- Planet body -->
+      <circle cx="0" cy="0" r="20" fill="#8A3010"/>
+      <circle cx="0" cy="0" r="20" fill="#C04820"/>
+      <!-- Surface features -->
+      <ellipse cx="4" cy="-3" rx="8" ry="5" fill="#A03818" opacity="0.6"/>
+      <ellipse cx="-5" cy="5" rx="6" ry="4" fill="#7A2810" opacity="0.5"/>
+      <!-- Polar cap -->
+      <ellipse cx="0" cy="-16" rx="7" ry="3" fill="rgba(255,240,230,0.5)"/>
+      <!-- Highlight -->
+      <ellipse cx="-6" cy="-8" rx="5" ry="4" fill="rgba(240,180,140,0.3)"/>
+    </g>
+
+    <!-- ── PLANET 4: Ice/Neptune-like (bottom-left) ── -->
+    <g transform="translate(30, 480)">
+      <!-- Glow -->
+      <circle cx="0" cy="0" r="32" fill="rgba(55,138,221,0.12)"/>
+      <!-- Planet body -->
+      <circle cx="0" cy="0" r="22" fill="#0A2A5A"/>
+      <circle cx="0" cy="0" r="22" fill="#1A4A9A"/>
+      <!-- Swirl bands -->
+      <ellipse cx="0" cy="-5" rx="19" ry="4" fill="rgba(80,140,220,0.35)" transform="rotate(-15)"/>
+      <ellipse cx="0" cy="4" rx="20" ry="3" fill="rgba(40,100,200,0.3)" transform="rotate(10)"/>
+      <ellipse cx="0" cy="10" rx="16" ry="3" fill="rgba(80,160,240,0.25)"/>
+      <!-- Great storm spot -->
+      <ellipse cx="5" cy="-2" rx="5" ry="3.5" fill="rgba(120,180,255,0.4)"/>
+      <!-- Highlight -->
+      <ellipse cx="-7" cy="-9" rx="6" ry="4" fill="rgba(160,210,255,0.25)"/>
+      <!-- Ring -->
+      <ellipse cx="0" cy="5" rx="36" ry="7" fill="none" stroke="rgba(80,140,220,0.35)" stroke-width="3"/>
+    </g>
+
+    <!-- ── PLANET 5: Small candy planet (center-ish low) ── -->
+    <g transform="translate(340, 600)">
+      <circle cx="0" cy="0" r="14" fill="#3A1A5A"/>
+      <circle cx="0" cy="0" r="14" fill="#7A4ACA"/>
+      <ellipse cx="0" cy="-3" rx="11" ry="3" fill="rgba(180,140,255,0.3)"/>
+      <ellipse cx="-4" cy="-6" rx="4" ry="3" fill="rgba(220,190,255,0.25)"/>
+    </g>
+
+    <!-- ── NEBULA glow patches ── -->
+    <ellipse cx="200" cy="200" rx="160" ry="100" fill="rgba(127,119,221,0.04)"/>
+    <ellipse cx="100" cy="400" rx="120" ry="80" fill="rgba(55,138,221,0.05)"/>
+    <ellipse cx="320" cy="450" rx="100" ry="70" fill="rgba(93,202,165,0.04)"/>
+
+    <defs>
+      <radialGradient id="satGrad" cx="35%" cy="30%" r="65%">
+        <stop offset="0%" stop-color="#7A4ACC" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#1A0A30" stop-opacity="0.6"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <!-- Shooting stars -->
+  <div class="shoot sh1"></div>
+  <div class="shoot sh2"></div>
+  <div class="shoot sh3"></div>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Top badge -->
+    <div class="top-badge">🚀 2026 건강 탐험 시작!</div>
+
+    <!-- Mascot -->
+    <div class="mascot-wrap">
+      <div class="mascot-circle">🚀</div>
+      <div class="mascot-star ms1">⭐</div>
+      <div class="mascot-star ms2">✨</div>
+      <div class="mascot-star ms3">🌟</div>
+    </div>
+
+    <!-- Title -->
+    <div class="title-block">
+      <p class="title-sub">튼튼하고 건강한 '나' 만들기 프로젝트</p>
+      <h1 class="title-main"></h1>
+      <div class="title-brand">
+        튼튼탐험대 <em>출발</em>! 🚀
+      </div>
+    </div>
+
+    <!-- Tagline card -->
+    <div class="tagline-card">
+      <p>
+        미션을 완료하고, 포인트를 모아서<br>
+        <strong>레벨을 올려봐요!</strong><br>
+        매일 꾸준히 도전하면<br>
+        몸도 마음도 튼튼해져요 💪
+      </p>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="cta-wrap">
+      <button class="cta-btn" id="startBtn" onclick="startAdventure()">
+        탐험 시작하기!
+        <span class="cta-arrow">→</span>
+      </button>
+    </div>
+
+  </div><!-- /.content -->
+</div><!-- /.scene -->
 
 <script>
-(function(){
-  var c=document.getElementById('star-canvas'),ctx=c.getContext('2d');
-  var stars=[];
-  function resize(){
-    c.width=window.innerWidth; c.height=window.innerHeight; stars=[];
-    for(var i=0;i<260;i++) stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+0.2,a:Math.random()*6.28,speed:Math.random()*0.4+0.05});
-  }
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(function(s){
-      s.a+=s.speed*0.015;
-      var alpha=0.2+Math.abs(Math.sin(s.a))*0.75;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(255,255,255,'+alpha.toFixed(2)+')';ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  window.addEventListener('resize',resize); resize(); draw();
-})();
+  // ── Star field canvas ──
+  (function() {
+    var c = document.getElementById('star-canvas');
+    var ctx = c.getContext('2d');
+    function resize() { c.width = window.innerWidth; c.height = window.innerHeight; drawStars(); }
+    function drawStars() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      var stars = [];
+      for (var i = 0; i < 180; i++) {
+        stars.push({
+          x: Math.random() * c.width,
+          y: Math.random() * c.height,
+          r: Math.random() * 1.6 + 0.2,
+          a: Math.random() * 0.8 + 0.2
+        });
+      }
+      stars.forEach(function(s) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,' + s.a + ')';
+        ctx.fill();
+      });
+    }
+    window.addEventListener('resize', resize);
+    resize();
+  })();
 
-function goStart(){
-  document.body.classList.add('page-out');
-  setTimeout(function(){ window.location.href='levelup.html'; },420);
-}
+  function startAdventure() {
+    var btn = document.getElementById('startBtn');
+    // Ripple effect
+    var ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.width = ripple.style.height = '60px';
+    ripple.style.left = '50%';
+    ripple.style.top = '50%';
+    ripple.style.marginLeft = '-30px';
+    ripple.style.marginTop = '-30px';
+    btn.appendChild(ripple);
+    setTimeout(function(){ ripple.remove(); }, 600);
 
-var lt=0;
-document.addEventListener('touchend',function(e){var n=Date.now();if(n-lt<300)e.preventDefault();lt=n;},{passive:false});
+    // Page transition → go to levelup intro page
+    document.querySelector('.scene').classList.add('page-out');
+    setTimeout(function(){
+      window.location.href = 'levelup.html';
+    }, 480);
+  }
+
+  // Prevent double-tap zoom on mobile
+  var lastTouch = 0;
+  document.addEventListener('touchend', function(e) {
+    var now = Date.now();
+    if (now - lastTouch < 300) e.preventDefault();
+    lastTouch = now;
+  }, { passive: false });
 </script>
 </body>
 </html>
