@@ -372,7 +372,7 @@
 
     <!-- 오늘 획득 포인트 + 패들렛 인증 (맨 위) -->
     <div class="total-pts" style="margin-top:2vh;">
-      <div class="total-pts-label">⭐ 오늘 획득 포인트</div>
+      <div class="total-pts-label">⭐ 오늘 획득 포인트 <span style="font-size:10px;opacity:0.6;">(하루 1회)</span></div>
       <span class="total-pts-num" id="today-pts">0</span><span class="total-pts-p">P</span>
     </div>
 
@@ -505,44 +505,102 @@ function showToast(msg){
   setTimeout(function(){t.style.display='none';},2200);
 }
 
-/* 미션 완료 */
-var missionDone={};
-var todayPts=0;
+/* 미션 완료 — 날짜 기반 하루 제한 */
+var MISSION_KEY = 'tuntun_missions_daily';
+var SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbzgBrjUH2rf1mUcyFp2GGWGvDaUnmIh0kV0rskcDB5j84Esu1IFbcJFHy4BQ93vUPc2/exec';
+
+function getTodayStr(){
+  var d=new Date();
+  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+
+/* 오늘 날짜 키로 저장된 미션 데이터 로드 */
+function loadTodayMissions(){
+  try{
+    var raw=localStorage.getItem(MISSION_KEY);
+    if(!raw) return {};
+    var data=JSON.parse(raw);
+    if(data.date !== getTodayStr()) return {}; // 날짜 바뀌면 초기화
+    return data.missions||{};
+  }catch(e){ return {}; }
+}
+
+function saveTodayMissions(missions){
+  try{
+    localStorage.setItem(MISSION_KEY, JSON.stringify({
+      date: getTodayStr(),
+      missions: missions
+    }));
+  }catch(e){}
+}
+
+var missionDone = loadTodayMissions();
+var todayPts = 0;
+
+/* 초기 렌더링 — 이미 완료된 미션 복원 */
+var MISSION_PTS = {m1:5, m2:5, m3:20, m4:5, m5:7};
+(function restoreMissions(){
+  Object.keys(missionDone).forEach(function(id){
+    if(missionDone[id]){
+      todayPts += MISSION_PTS[id]||0;
+      var el=document.getElementById(id);
+      if(!el) return;
+      el.classList.add('done');
+      var btn=el.querySelector('.m-btn');
+      if(btn){ btn.textContent='완료 ✓'; btn.classList.add('done'); btn.disabled=true; }
+      var cbtn=document.getElementById('c-'+id);
+      if(cbtn) cbtn.style.display='none'; // 취소 버튼 숨김 (하루 제한이므로)
+    }
+  });
+  document.getElementById('today-pts').textContent=todayPts;
+})();
 
 function doMission(id,pts){
   if(missionDone[id]) return;
   missionDone[id]=true;
+  saveTodayMissions(missionDone);
   todayPts+=pts;
+
   var el=document.getElementById(id);
   el.classList.add('done');
   var btn=el.querySelector('.m-btn');
-  btn.textContent='완료 ✓'; btn.classList.add('done');
+  btn.textContent='완료 ✓'; btn.classList.add('done'); btn.disabled=true;
+  // 취소 버튼 숨김 (하루 완료 후 재입력 방지)
   var cbtn=document.getElementById('c-'+id);
-  if(cbtn) cbtn.classList.add('visible');
+  if(cbtn) cbtn.style.display='none';
+
   document.getElementById('today-pts').textContent=todayPts;
   showToast('⭐ +'+pts+'P 획득! 대단해요!');
+
+  /* 총 누적 포인트 저장 */
   try{
     var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');
-    localStorage.setItem('tuntun_pts', cur+pts);
+    var newPts=cur+pts;
+    localStorage.setItem('tuntun_pts', newPts);
+    /* 구글 시트 자동 전송 */
+    autoSendPoints(newPts, id, pts);
   }catch(e){}
 }
 
-function cancelMission(id,pts){
-  if(!missionDone[id]) return;
-  missionDone[id]=false;
-  todayPts-=pts;
-  var el=document.getElementById(id);
-  el.classList.remove('done');
-  var btn=el.querySelector('.m-btn');
-  btn.textContent='완료!'; btn.classList.remove('done');
-  var cbtn=document.getElementById('c-'+id);
-  if(cbtn) cbtn.classList.remove('visible');
-  document.getElementById('today-pts').textContent=todayPts;
-  showToast('↩ 미션 취소됐어요');
-  try{
-    var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');
-    localStorage.setItem('tuntun_pts', Math.max(0, cur-pts));
-  }catch(e){}
+/* 포인트 → 시트 자동 전송 (학번 포함) */
+function autoSendPoints(total, missionId, pts){
+  var studentId = localStorage.getItem('tuntun_student_id')||'미입력';
+  if(studentId==='GUEST') return; // 게스트는 전송 안 함
+  var lv=total<=500?'1단계':total<=1500?'2단계':total<=3000?'3단계':'4단계';
+  var missionNames={m1:'물 마시기',m2:'채소 먹기',m3:'30분 운동',m4:'아침밥',m5:'스마트폰 2h이하'};
+  fetch(SHEETS_URL,{
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      type:'mission',
+      number: studentId,
+      name: studentId,
+      mission: missionNames[missionId]||missionId,
+      pts: pts,
+      total: total,
+      level: lv
+    })
+  }).catch(function(){});
 }
 
 /* 네비 */

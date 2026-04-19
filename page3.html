@@ -687,15 +687,15 @@
 })();
 
 var LEVELS=[
-  {emoji:'🐱',name:'초보 냥이',                   stage:'1단계 · 0~200P'},
-  {emoji:'🐵',name:'재간둥이 원숭이',              stage:'2단계 · 201~600P'},
-  {emoji:'🐶',name:'지구수호대 멍멍이',            stage:'3단계 · 601~1200P'},
-  {emoji:'🐯',name:'우주를 누비는 무적의 호랑이',  stage:'4단계 · 1201P~'}
+  {emoji:'🐱',name:'초보 냥이',                   stage:'1단계 · 0~500P'},
+  {emoji:'🐵',name:'재간둥이 원숭이',              stage:'2단계 · 501~1500P'},
+  {emoji:'🐶',name:'지구수호대 멍멍이',            stage:'3단계 · 1501~3000P'},
+  {emoji:'🐯',name:'우주를 누비는 무적의 호랑이',  stage:'4단계 · 3001P~'}
 ];
 var curLv=0;
 try{
   var pts=parseInt(localStorage.getItem('tuntun_pts')||'0');
-  if(pts<=200)curLv=0;else if(pts<=600)curLv=1;else if(pts<=1200)curLv=2;else curLv=3;
+  if(pts<=500)curLv=0;else if(pts<=1500)curLv=1;else if(pts<=3000)curLv=2;else curLv=3;
 }catch(e){}
 
 function renderLevel(){
@@ -759,7 +759,7 @@ function renderDashStats(){
   var pts=parseInt(localStorage.getItem('tuntun_pts')||'0');
   var recs={}; try{ recs=JSON.parse(localStorage.getItem('tuntun_body_records_v2')||'{}'); }catch(e){}
   var recCount=Object.keys(recs).length;
-  var lv=pts<=200?'1단계':pts<=600?'2단계':pts<=1200?'3단계':'4단계';
+  var lv=pts<=500?'1단계':pts<=1500?'2단계':pts<=3000?'3단계':'4단계';
   document.getElementById('ds-total').textContent=pts+'P';
   document.getElementById('ds-records').textContent=recCount+'건';
   document.getElementById('ds-level').textContent=lv;
@@ -768,12 +768,12 @@ function renderDashStats(){
 function renderLvDist(){
   var pts=parseInt(localStorage.getItem('tuntun_pts')||'0');
   var levels=[
-    {name:'1단계 🌱',max:200,color:'#5DCAA5'},
-    {name:'2단계 🧭',max:600,color:'#378ADD'},
-    {name:'3단계 🏅',max:1200,color:'#EF9F27'},
+    {name:'1단계 🌱',max:500,color:'#5DCAA5'},
+    {name:'2단계 🧭',max:1500,color:'#378ADD'},
+    {name:'3단계 🏅',max:3000,color:'#EF9F27'},
     {name:'4단계 🦸',max:99999,color:'#D85A30'}
   ];
-  var curLvIdx=pts<=200?0:pts<=600?1:pts<=1200?2:3;
+  var curLvIdx=pts<=500?0:pts<=1500?1:pts<=3000?2:3;
   var prev=curLvIdx===0?0:levels[curLvIdx-1].max;
   var next=levels[curLvIdx].max===99999?prev+500:levels[curLvIdx].max;
   var pct=curLvIdx===3?100:Math.min(100,Math.round((pts-prev)/(next-prev)*100));
@@ -859,7 +859,7 @@ function grantPoint(){
     localStorage.setItem('tuntun_grant_log',JSON.stringify(history));
 
     /* 구글 시트 전송 */
-    var lv=newTotal<=200?'1단계':newTotal<=600?'2단계':newTotal<=1200?'3단계':'4단계';
+    var lv=newTotal<=500?'1단계':newTotal<=1500?'2단계':newTotal<=3000?'3단계':'4단계';
     fetch(SHEETS_URL,{
       method:'POST',mode:'no-cors',
       headers:{'Content-Type':'application/json'},
@@ -914,7 +914,7 @@ function toggleCheck(idx,val){
 
 function printDash(){
   var pts=localStorage.getItem('tuntun_pts')||'0';
-  var lv=parseInt(pts)<=200?'1단계':parseInt(pts)<=600?'2단계':parseInt(pts)<=1200?'3단계':'4단계';
+  var lv=parseInt(pts)<=500?'1단계':parseInt(pts)<=1500?'2단계':parseInt(pts)<=3000?'3단계':'4단계';
   var now=new Date();
   var dateStr=now.getFullYear()+'년 '+(now.getMonth()+1)+'월 '+now.getDate()+'일';
   var win=window.open('','_blank');
