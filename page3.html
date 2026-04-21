@@ -1158,8 +1158,8 @@ document.addEventListener('touchend',function(e){var n=Date.now();if(n-lt<300)e.
 function confirmReg(){
   var val = (document.getElementById('reg-input').value||'').trim();
   var err = document.getElementById('reg-err');
-  if(!/^\d{3,6}$/.test(val)){
-    err.textContent = '❗ 숫자로만 입력해줘! (예: 1205)';
+  if(!/^\d{4,6}$/.test(val)){
+    err.textContent = '❗ 4자리 숫자로 입력해줘! (예: 1205)';
     document.getElementById('reg-input').focus();
     return;
   }
@@ -1210,7 +1210,7 @@ document.addEventListener('keydown', function(e){
       type="number" inputmode="numeric" pattern="[0-9]*"
       placeholder="예) 1205" maxlength="6"
     />
-    <div class="reg-hint">학년 + 반 + 번호 숫자만 입력해줘!</div>
+    <div class="reg-hint">학년 + 반 + 번호 4자리 숫자로 입력해줘!</div>
     <div class="reg-err" id="reg-err"></div>
     <div class="reg-btn-row">
       <button class="reg-guest-btn" onclick="guestReg()">교사 / 학부모</button>

@@ -198,10 +198,10 @@
       padding: 5px 10px; cursor: pointer;
       transition: background 0.15s, transform 0.15s;
       white-space: nowrap;
-      display: none;
+      display: block;
     }
-    .c-btn.visible { display: block; }
     .c-btn:active { transform: scale(0.95); }
+    .c-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
 
     /* ── 총 포인트 표시 ── */
     .total-pts {
@@ -404,7 +404,7 @@
           <div class="mi-pt">+20P</div>
           <div class="mi-btn-row">
             <button class="m-btn" onclick="doMission('m3',20)">완료!</button>
-            <button class="c-btn" id="c-m3" onclick="cancelMission('m3',20)">취소</button>
+            <button class="c-btn" id="c-m3" disabled onclick="cancelMission('m3',20)">취소</button>
           </div>
         </div>
       </div>
@@ -419,7 +419,7 @@
           <div class="mi-pt">+5P</div>
           <div class="mi-btn-row">
             <button class="m-btn" onclick="doMission('m1',5)">완료!</button>
-            <button class="c-btn" id="c-m1" onclick="cancelMission('m1',5)">취소</button>
+            <button class="c-btn" id="c-m1" disabled onclick="cancelMission('m1',5)">취소</button>
           </div>
         </div>
       </div>
@@ -434,7 +434,7 @@
           <div class="mi-pt">+5P</div>
           <div class="mi-btn-row">
             <button class="m-btn" onclick="doMission('m2',5)">완료!</button>
-            <button class="c-btn" id="c-m2" onclick="cancelMission('m2',5)">취소</button>
+            <button class="c-btn" id="c-m2" disabled onclick="cancelMission('m2',5)">취소</button>
           </div>
         </div>
       </div>
@@ -449,7 +449,7 @@
           <div class="mi-pt">+5P</div>
           <div class="mi-btn-row">
             <button class="m-btn" onclick="doMission('m4',5)">완료!</button>
-            <button class="c-btn" id="c-m4" onclick="cancelMission('m4',5)">취소</button>
+            <button class="c-btn" id="c-m4" disabled onclick="cancelMission('m4',5)">취소</button>
           </div>
         </div>
       </div>
@@ -464,7 +464,7 @@
           <div class="mi-pt">+7P</div>
           <div class="mi-btn-row">
             <button class="m-btn" onclick="doMission('m5',7)">완료!</button>
-            <button class="c-btn" id="c-m5" onclick="cancelMission('m5',7)">취소</button>
+            <button class="c-btn" id="c-m5" disabled onclick="cancelMission('m5',7)">취소</button>
           </div>
         </div>
       </div>
@@ -505,11 +505,12 @@ function showToast(msg){
   setTimeout(function(){t.style.display='none';},2200);
 }
 
-/* 미션 완료 — 날짜 기반 하루 제한 */
+/* 미션 설정 */
 var MISSION_KEY   = 'tuntun_missions_daily';
 var MONTHLY_KEY   = 'tuntun_monthly_pts';
 var MONTHLY_MONTH = 'tuntun_monthly_month';
 var SHEETS_URL    = 'https://script.google.com/macros/s/AKfycbzgBrjUH2rf1mUcyFp2GGWGvDaUnmIh0kV0rskcDB5j84Esu1IFbcJFHy4BQ93vUPc2/exec';
+var MISSION_PTS   = {m1:5, m2:5, m3:20, m4:5, m5:7};
 
 function getTodayStr(){
   var d=new Date();
@@ -520,7 +521,7 @@ function getCurrentMonth(){
   return d.getFullYear()+'-'+(d.getMonth()+1);
 }
 
-/* 자정 넘어가면 전날 포인트를 이번달에 합산 후 미션 초기화 */
+/* 자정 롤오버: 전날 포인트 → 이번달 합산 후 미션 초기화 */
 function rolloverIfNeeded(){
   try{
     var raw=localStorage.getItem(MISSION_KEY);
@@ -542,7 +543,6 @@ function rolloverIfNeeded(){
 }
 rolloverIfNeeded();
 
-/* 오늘 날짜 키로 저장된 미션 데이터 로드 */
 function loadTodayMissions(){
   try{
     var raw=localStorage.getItem(MISSION_KEY);
@@ -566,8 +566,7 @@ function saveTodayMissions(missions, pts){
 var missionDone = loadTodayMissions();
 var todayPts = 0;
 
-/* 초기 렌더링 — 이미 완료된 미션 복원 */
-var MISSION_PTS = {m1:5, m2:5, m3:20, m4:5, m5:7};
+/* 초기 렌더링 */
 (function restoreMissions(){
   Object.keys(missionDone).forEach(function(id){
     if(missionDone[id]){
@@ -578,7 +577,7 @@ var MISSION_PTS = {m1:5, m2:5, m3:20, m4:5, m5:7};
       var btn=el.querySelector('.m-btn');
       if(btn){ btn.textContent='완료 ✓'; btn.classList.add('done'); btn.disabled=true; }
       var cbtn=document.getElementById('c-'+id);
-      if(cbtn) cbtn.style.display='none'; // 취소 버튼 숨김 (하루 제한이므로)
+      if(cbtn){ cbtn.disabled=false; }  // 취소 버튼 활성
     }
   });
   document.getElementById('today-pts').textContent=todayPts;
@@ -587,34 +586,53 @@ var MISSION_PTS = {m1:5, m2:5, m3:20, m4:5, m5:7};
 function doMission(id,pts){
   if(missionDone[id]) return;
   missionDone[id]=true;
-  saveTodayMissions(missionDone, todayPts+pts);
   todayPts+=pts;
+  saveTodayMissions(missionDone, todayPts);
 
   var el=document.getElementById(id);
   el.classList.add('done');
   var btn=el.querySelector('.m-btn');
   btn.textContent='완료 ✓'; btn.classList.add('done'); btn.disabled=true;
-  // 취소 버튼 숨김 (하루 완료 후 재입력 방지)
   var cbtn=document.getElementById('c-'+id);
-  if(cbtn) cbtn.style.display='none';
+  if(cbtn){ cbtn.disabled=false; }  // 취소 버튼 활성
 
   document.getElementById('today-pts').textContent=todayPts;
   showToast('⭐ +'+pts+'P 획득! 대단해요!');
 
-  /* 총 누적 포인트 저장 */
   try{
     var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');
     var newPts=cur+pts;
     localStorage.setItem('tuntun_pts', newPts);
-    /* 구글 시트 자동 전송 */
     autoSendPoints(newPts, id, pts);
   }catch(e){}
 }
 
-/* 포인트 → 시트 자동 전송 (학번 포함) */
+function cancelMission(id,pts){
+  if(!missionDone[id]) return;
+  missionDone[id]=false;
+  todayPts=Math.max(0, todayPts-pts);
+  saveTodayMissions(missionDone, todayPts);
+
+  var el=document.getElementById(id);
+  el.classList.remove('done');
+  var btn=el.querySelector('.m-btn');
+  btn.textContent='완료!'; btn.classList.remove('done'); btn.disabled=false;
+  var cbtn=document.getElementById('c-'+id);
+  if(cbtn){ cbtn.disabled=true; }  // 취소 버튼 비활성 (완료 전)
+
+  document.getElementById('today-pts').textContent=todayPts;
+  showToast('↩️ 미션 취소됐어요');
+
+  try{
+    var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');
+    localStorage.setItem('tuntun_pts', Math.max(0, cur-pts));
+  }catch(e){}
+}
+
+/* 포인트 → 시트 자동 전송 */
 function autoSendPoints(total, missionId, pts){
   var studentId = localStorage.getItem('tuntun_student_id')||'미입력';
-  if(studentId==='GUEST') return; // 게스트는 전송 안 함
+  if(studentId==='GUEST') return;
   var lv=total<=2500?'1단계':total<=5000?'2단계':total<=7500?'3단계':'4단계';
   var missionNames={m1:'물 마시기',m2:'채소 먹기',m3:'30분 운동',m4:'아침밥',m5:'스마트폰 2h이하'};
   fetch(SHEETS_URL,{

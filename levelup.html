@@ -232,7 +232,7 @@
       </div>
       <div class="lv-body">
         <div class="pts-display">
-          <div class="pts-range">0 ~ 2500P</div>
+          <div class="pts-range">0 ~ 500P</div>
           <div class="pts-unit">달성 포인트</div>
         </div>
       </div>
@@ -250,7 +250,7 @@
       </div>
       <div class="lv-body">
         <div class="pts-display">
-          <div class="pts-range">2501 ~ 5000P</div>
+          <div class="pts-range">501 ~ 1500P</div>
           <div class="pts-unit">달성 포인트</div>
         </div>
       </div>
@@ -268,7 +268,7 @@
       </div>
       <div class="lv-body">
         <div class="pts-display">
-          <div class="pts-range">5001 ~ 7500P</div>
+          <div class="pts-range">1501 ~ 3000P</div>
           <div class="pts-unit">달성 포인트</div>
         </div>
       </div>
@@ -286,7 +286,7 @@
       </div>
       <div class="lv-body">
         <div class="pts-display">
-          <div class="pts-range">7501 ~ 10000P</div>
+          <div class="pts-range">3001P ~</div>
           <div class="pts-unit">달성 포인트</div>
         </div>
       </div>
@@ -344,7 +344,7 @@
       placeholder="예) 1205"
       maxlength="6"
     />
-    <div class="id-hint">학년 + 반 + 번호 숫자만 입력해줘!</div>
+    <div class="id-hint">학년 + 반 + 번호 4자리 숫자로 입력해줘!</div>
     <div class="id-err" id="id-err"></div>
 
     <!-- 버튼 두 개 -->
@@ -395,9 +395,9 @@ function showIdPopup(){
 function confirmId(){
   var val=document.getElementById('id-input').value.trim();
   var err=document.getElementById('id-err');
-  // 숫자만, 3~6자리 허용
-  if(!/^\d{3,6}$/.test(val)){
-    err.textContent='❗ 숫자로만 입력해줘! (예: 1205)';
+  // 숫자만, 4~6자리 허용
+  if(!/^\d{4,6}$/.test(val)){
+    err.textContent='❗ 4자리 숫자로 입력해줘! (예: 1205)';
     document.getElementById('id-input').focus();
     return;
   }
