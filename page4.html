@@ -224,7 +224,31 @@ var SHEETS_URL='https://script.google.com/macros/s/AKfycbzgBrjUH2rf1mUcyFp2GGWGv
 var MISSION_PTS={m1:5,m2:5,m3:20,m4:5,m5:7};
 function getTodayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function getCurrentMonth(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1);}
-function rolloverIfNeeded(){try{var raw=localStorage.getItem(MISSION_KEY);if(!raw)return;var data=JSON.parse(raw);if(data.date&&data.date!==getTodayStr()){var pp=parseInt(data.todayPts||'0');if(pp>0){var cm=getCurrentMonth(),sm=localStorage.getItem(MONTHLY_MONTH)||'',monthly=sm===cm?parseInt(localStorage.getItem(MONTHLY_KEY)||'0'):0;monthly+=pp;localStorage.setItem(MONTHLY_KEY,monthly);localStorage.setItem(MONTHLY_MONTH,cm);}localStorage.removeItem(MISSION_KEY);}}catch(e){}}
+function rolloverIfNeeded(){
+  try{
+    var raw=localStorage.getItem(MISSION_KEY);
+    if(!raw)return;
+    var data=JSON.parse(raw);
+    if(data.date&&data.date!==getTodayStr()){
+      var pp=parseInt(data.todayPts||'0');
+      if(pp>0){
+        var cm=getCurrentMonth(),sm=localStorage.getItem(MONTHLY_MONTH)||'',monthly=sm===cm?parseInt(localStorage.getItem(MONTHLY_KEY)||'0'):0;
+        monthly+=pp;
+        localStorage.setItem(MONTHLY_KEY,monthly);
+        localStorage.setItem(MONTHLY_MONTH,cm);
+      }
+      localStorage.removeItem(MISSION_KEY);
+
+      // 28일이면 월 탭 복사 신호를 시트에 전송
+      var now=new Date();
+      if(now.getDate()===28){
+        fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({type:'monthly_transfer',month:now.getMonth()+1})
+        }).catch(function(){});
+      }
+    }
+  }catch(e){}
+}
 rolloverIfNeeded();
 function loadTodayMissions(){try{var raw=localStorage.getItem(MISSION_KEY);if(!raw)return{};var data=JSON.parse(raw);if(data.date!==getTodayStr())return{};return data.missions||{};}catch(e){return{};}}
 function saveTodayMissions(m,p){try{localStorage.setItem(MISSION_KEY,JSON.stringify({date:getTodayStr(),missions:m,todayPts:p}));}catch(e){}}
