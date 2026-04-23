@@ -236,14 +236,21 @@ function rolloverIfNeeded(){
         monthly+=pp;
         localStorage.setItem(MONTHLY_KEY,monthly);
         localStorage.setItem(MONTHLY_MONTH,cm);
+
+        /* 하루 포인트 1행만 시트에 전송 */
+        var sid=localStorage.getItem('tuntun_student_id')||'미입력';
+        var sname=localStorage.getItem('tuntun_student_name')||'';
+        fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({type:'daily',number:sid,name:sname,date:data.date,pts:pp})
+        }).catch(function(){});
       }
       localStorage.removeItem(MISSION_KEY);
 
-      // 28일이면 월 탭 복사 신호를 시트에 전송
+      /* 28일이면 월별 합산 신호 전송 */
       var now=new Date();
       if(now.getDate()===28){
         fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({type:'monthly_transfer',month:now.getMonth()+1})
+          body:JSON.stringify({type:'monthly_summary',month:now.getMonth()+1})
         }).catch(function(){});
       }
     }
@@ -256,9 +263,8 @@ var missionDone=loadTodayMissions();
 var todayPts=0;
 (function restoreMissions(){Object.keys(missionDone).forEach(function(id){if(missionDone[id]){todayPts+=MISSION_PTS[id]||0;var el=document.getElementById(id);if(!el)return;el.classList.add('done');var btn=el.querySelector('.m-btn');if(btn){btn.textContent='완료 ✓';btn.classList.add('done');btn.disabled=true;}var cbtn=document.getElementById('c-'+id);if(cbtn)cbtn.disabled=false;}});document.getElementById('today-pts').textContent=todayPts;})();
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},2200);}
-function doMission(id,p){if(missionDone[id])return;missionDone[id]=true;todayPts+=p;saveTodayMissions(missionDone,todayPts);var el=document.getElementById(id);el.classList.add('done');var btn=el.querySelector('.m-btn');btn.textContent='완료 ✓';btn.classList.add('done');btn.disabled=true;var cbtn=document.getElementById('c-'+id);if(cbtn)cbtn.disabled=false;document.getElementById('today-pts').textContent=todayPts;showToast('⭐ +'+p+'P 획득! 대단해요!');try{var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');var newPts=cur+p;localStorage.setItem('tuntun_pts',newPts);pts=newPts;curLv=pts<=2500?0:pts<=5000?1:pts<=7500?2:3;renderLevel();autoSendPoints(newPts,id,p);}catch(e){}}
+function doMission(id,p){if(missionDone[id])return;missionDone[id]=true;todayPts+=p;saveTodayMissions(missionDone,todayPts);var el=document.getElementById(id);el.classList.add('done');var btn=el.querySelector('.m-btn');btn.textContent='완료 ✓';btn.classList.add('done');btn.disabled=true;var cbtn=document.getElementById('c-'+id);if(cbtn)cbtn.disabled=false;document.getElementById('today-pts').textContent=todayPts;showToast('⭐ +'+p+'P 획득! 대단해요!');try{var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');var newPts=cur+p;localStorage.setItem('tuntun_pts',newPts);pts=newPts;curLv=pts<=2500?0:pts<=5000?1:pts<=7500?2:3;renderLevel();}catch(e){}}
 function cancelMission(id,p){if(!missionDone[id])return;missionDone[id]=false;todayPts=Math.max(0,todayPts-p);saveTodayMissions(missionDone,todayPts);var el=document.getElementById(id);el.classList.remove('done');var btn=el.querySelector('.m-btn');btn.textContent='완료!';btn.classList.remove('done');btn.disabled=false;var cbtn=document.getElementById('c-'+id);if(cbtn)cbtn.disabled=true;document.getElementById('today-pts').textContent=todayPts;showToast('↩️ 미션 취소됐어요');try{var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');localStorage.setItem('tuntun_pts',Math.max(0,cur-p));pts=Math.max(0,cur-p);curLv=pts<=2500?0:pts<=5000?1:pts<=7500?2:3;renderLevel();}catch(e){}}
-function autoSendPoints(total,missionId,p){var sid=localStorage.getItem('tuntun_student_id')||'미입력';if(sid==='GUEST')return;var lv=total<=2500?'1단계':total<=5000?'2단계':total<=7500?'3단계':'4단계';var mNames={m1:'물 마시기',m2:'채소 먹기',m3:'30분 운동',m4:'아침밥',m5:'스마트폰 2h이하'};fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'mission',number:sid,name:sid,mission:mNames[missionId]||missionId,pts:p,total:total,level:lv})}).catch(function(){});}
 function goPrev(){document.querySelector('.scene').classList.add('page-out');setTimeout(function(){window.location.href='page3.html';},400);}
 function goNext(){document.querySelector('.scene').classList.add('page-out');setTimeout(function(){window.location.href='page6.html';},400);}
 var lt=0;document.addEventListener('touchend',function(e){var n=Date.now();if(n-lt<300)e.preventDefault();lt=n;},{passive:false});
