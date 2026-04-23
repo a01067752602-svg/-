@@ -196,7 +196,7 @@ var curLv=pts<=2500?0:pts<=5000?1:pts<=7500?2:3;
 (function(){for(var i=0;i<4;i++)document.getElementById('lv'+i).classList.toggle('active',i===curLv);var maxes=[2500,5000,7500,10000];var prev=curLv===0?0:maxes[curLv-1];var next=maxes[curLv]===10000?prev+2500:maxes[curLv];var pct=curLv===3?100:Math.min(100,Math.round((pts-prev)/(next-prev)*100));document.getElementById('lv-bar').style.width=pct+'%';document.getElementById('lv-bar-label').textContent=pts+'P';var pi=document.getElementById('pts-input');if(pi)pi.value=pts||'';})();
 
 var CI_STORAGE='tuntun_body_records_v2';
-var SHEETS_URL='https://script.google.com/macros/s/AKfycbyuTVW3h2Ez42NLj-LvV0jHb9d18S6vR3nCKwxrkh6TCUKYZVfhot0pm2Lk5Txggilf/exec';
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbxIMa_RHfLoHQyyPu-i5K6XNtbqhnUBlBDEhvegHpTi2d6LnyD8Vu9ZwSBKfQ_wsvBu/exec';
 var ciMonth=new Date().getMonth()+1;if(ciMonth<6)ciMonth=6;if(ciMonth>12)ciMonth=12;
 var recs={};try{recs=JSON.parse(localStorage.getItem(CI_STORAGE)||'{}');}catch(e){}
 
