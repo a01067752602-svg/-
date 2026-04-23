@@ -547,14 +547,26 @@ function grantPoint(){
   var name=document.getElementById('grant-name').value||'미입력';
   var reason=document.getElementById('grant-reason').value||'수동 지급';
   var pt=parseInt(document.getElementById('grant-pt').value)||5;
+
+  /* 누적 포인트에 합산 */
   var cur=parseInt(localStorage.getItem('tuntun_pts')||'0');
   localStorage.setItem('tuntun_pts',cur+pt);
-  var log=[];try{log=JSON.parse(localStorage.getItem('tuntun_grant_log')||'[]');}catch(e){}
+
+  /* 이번달 월간 포인트에도 합산 */
   var now=new Date();
+  var curMonth=now.getFullYear()+'-'+(now.getMonth()+1);
+  var savedMonth=localStorage.getItem('tuntun_monthly_month')||'';
+  var monthly=savedMonth===curMonth?parseInt(localStorage.getItem('tuntun_monthly_pts')||'0'):0;
+  monthly+=pt;
+  localStorage.setItem('tuntun_monthly_pts',monthly);
+  localStorage.setItem('tuntun_monthly_month',curMonth);
+
+  /* 지급 이력 저장 */
+  var log=[];try{log=JSON.parse(localStorage.getItem('tuntun_grant_log')||'[]');}catch(e){}
   log.unshift({name:name,reason:reason,pt:pt,time:(now.getMonth()+1)+'/'+now.getDate()+' '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')});
   localStorage.setItem('tuntun_grant_log',JSON.stringify(log.slice(0,50)));
   renderGrantLog();
-  alert('✅ '+pt+'P 지급 완료!');
+  alert('✅ '+pt+'P 지급 완료! (이번달 누적: '+monthly+'P)');
 }
 function renderGrantLog(){
   var log=[];try{log=JSON.parse(localStorage.getItem('tuntun_grant_log')||'[]');}catch(e){}
