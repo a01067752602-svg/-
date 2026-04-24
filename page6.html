@@ -230,12 +230,12 @@ function saveQuizLink(grade){
   alert((grade==='low'?'저학년':'고학년')+' 링크 저장 완료!');
 }
 function renderQuizBtns(){
-  var lLow=localStorage.getItem('quiz_link_low')||'';
-  var lHigh=localStorage.getItem('quiz_link_high')||'';
+  var lLow=localStorage.getItem('quiz_link_low')||'https://wordwall.net/resource/110983028';
+  var lHigh=localStorage.getItem('quiz_link_high')||'https://wordwall.net/resource/110982835';
   var wrap=document.getElementById('quiz-btn-wrap');
   var html='';
-  if(lLow) html+='<a href="'+lLow+'" target="_blank" class="ext-btn" style="background:rgba(255,200,60,.1);border:1.5px solid rgba(255,200,60,.3);color:#FFD060;">🌟 저학년 퀴즈 →</a>';
-  if(lHigh) html+='<a href="'+lHigh+'" target="_blank" class="ext-btn" style="background:rgba(100,160,255,.1);border:1.5px solid rgba(100,160,255,.3);color:#92C8FF;">⭐ 고학년 퀴즈 →</a>';
+  if(lLow) html+='<a href="'+lLow+'" target="_blank" class="ext-btn" style="background:rgba(255,200,60,.1);border:1.5px solid rgba(255,200,60,.3);color:#FFD060;">🌟 저학년 퀴즈 (카드 5쌍) →</a>';
+  if(lHigh) html+='<a href="'+lHigh+'" target="_blank" class="ext-btn" style="background:rgba(100,160,255,.1);border:1.5px solid rgba(100,160,255,.3);color:#92C8FF;">⭐ 고학년 퀴즈 (카드 10쌍) →</a>';
   wrap.innerHTML=html;
   if(lLow) document.getElementById('inp-low').value=lLow;
   if(lHigh) document.getElementById('inp-high').value=lHigh;
